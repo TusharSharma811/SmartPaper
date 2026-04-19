@@ -1,6 +1,16 @@
-# AI Question Paper Generator
+# SmartPaper
 
 An AI-powered backend that generates structured university exam question papers based on subject, difficulty, and section pattern configuration. Papers are stored in MongoDB and exported as A4 PDFs.
+
+**Live Demo:** *To be updated soon*
+
+---
+
+## Screenshot
+
+![Dashboard](./screenshot.png)
+
+---
 
 ## Tech Stack
 
@@ -11,6 +21,8 @@ An AI-powered backend that generates structured university exam question papers 
 | AI Service | Python, FastAPI, HuggingFace Transformers, FAISS, SentenceTransformers |
 | PDF Generation | Puppeteer (HTML → PDF) |
 | Authentication | JWT, bcrypt |
+
+---
 
 ## Architecture
 
@@ -29,6 +41,8 @@ The AI service uses **Retrieval-Augmented Generation (RAG)**:
 2. Retrieves relevant syllabus topics and past questions from FAISS
 3. Injects the retrieved context into the LLM prompt
 4. Generates structured questions grounded in real course material
+
+---
 
 ## Folder Structure
 
@@ -79,6 +93,8 @@ ai-service/
     └── paper_ingestor.py        # POST /add-paper pipeline
 ```
 
+---
+
 ## API Endpoints
 
 ### Authentication
@@ -126,6 +142,8 @@ ai-service/
 
 The backend validates that `(10×2) + (5×6) + (2×10) = 60 = totalMarks` before calling the AI.
 
+---
+
 ## Setup & Run
 
 ### Prerequisites
@@ -164,67 +182,7 @@ python app.py
 AI service starts on **http://localhost:8000**.
 On first launch, the seed knowledge base (`data/knowledge_base.txt`) is automatically indexed into FAISS.
 
-### 4. Add knowledge to the vector store (optional)
-
-```bash
-# Add syllabus topics
-curl -X POST http://localhost:8000/add-syllabus \
-  -H "Content-Type: application/json" \
-  -d '{
-    "subject": "Data Structures",
-    "topics": [
-      "Red-Black Trees",
-      "Skip Lists",
-      "Trie data structure"
-    ]
-  }'
-
-# Add past exam questions
-curl -X POST http://localhost:8000/add-paper \
-  -H "Content-Type: application/json" \
-  -d '{
-    "subject": "Data Structures",
-    "questions": [
-      "Compare Red-Black trees with AVL trees.",
-      "Explain trie operations with time complexity."
-    ]
-  }'
-
-# Test semantic search
-curl "http://localhost:8000/search?query=tree+rotations&top_k=5&subject=Data+Structures"
-```
-
-### 5. Test the full flow
-
-```bash
-# Register
-curl -X POST http://localhost:3000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Admin","email":"admin@test.com","password":"password123","role":"admin"}'
-
-# Login (copy the token from response)
-curl -X POST http://localhost:3000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"admin@test.com","password":"password123"}'
-
-# Generate a paper (replace <TOKEN>)
-curl -X POST http://localhost:3000/api/papers/generate \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <TOKEN>" \
-  -d '{
-    "subject":"Data Structures",
-    "course":"B.Tech",
-    "branch":"CSE",
-    "year":2,
-    "difficulty":"medium",
-    "totalMarks":60,
-    "pattern":[
-      {"section":"A","questions":10,"marksEach":2},
-      {"section":"B","questions":5,"marksEach":6},
-      {"section":"C","questions":2,"marksEach":10}
-    ]
-  }'
-```
+---
 
 ## Environment Variables
 
@@ -240,16 +198,18 @@ curl -X POST http://localhost:3000/api/papers/generate \
 | `EMBEDDING_MODEL` | `sentence-transformers/all-MiniLM-L6-v2` | SentenceTransformer model for embeddings |
 | `LLM_MODEL` | `google/flan-t5-base` | HuggingFace model for question generation |
 
-## RAG Pipeline
-
-The AI service implements a full RAG pipeline:
-
-1. **Embedding** — `rag/embedder.py` uses `all-MiniLM-L6-v2` (384-dim vectors)
-2. **Vector Store** — `rag/vector_store.py` manages a FAISS `IndexFlatL2` index persisted to disk alongside aligned JSON metadata
-3. **Retrieval** — `rag/retriever.py` embeds queries, searches FAISS, and optionally filters by subject
-4. **Generation** — `generator/question_generator.py` builds prompts with retrieved context and calls the LLM to generate exam questions
-5. **Ingestion** — `ingestion/` modules enable adding new syllabus topics and past papers at runtime without rebuilding the index
+---
 
 ## License
 
-ISC
+This project is licensed under the MIT License. See the [MIT LICENSE](LICENSE) file for details.
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
