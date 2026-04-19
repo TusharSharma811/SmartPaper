@@ -8,7 +8,7 @@ An AI-powered backend that generates structured university exam question papers 
 
 ## Screenshot
 
-![Dashboard](./screenshot.png)
+![Dashboard](https://github.com/alankrit98/SmartPaper/blob/main/screenshots/Question%20Paper%20Generation%20Interface_1.png)
 
 ---
 
