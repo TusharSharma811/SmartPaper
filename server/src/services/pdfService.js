@@ -201,7 +201,7 @@ const buildChartsHTML = (paper) => {
  */
 const buildHTML = (paper) => {
   const meta = paper.metadata || {};
-  const collegeName = process.env.COLLEGE_NAME || "University College of Engineering";
+  const collegeName = process.env.COLLEGE_NAME || "GL Bajaj Institute of Technology and Management";
   const examName = meta.exam || "Examination";
   const subjectName = meta.subject || "N/A";
   const subjectCode = meta.subject_code || "";
