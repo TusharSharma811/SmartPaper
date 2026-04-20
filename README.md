@@ -194,7 +194,7 @@ On first launch, the seed knowledge base (`data/knowledge_base.txt`) is automati
 | `JWT_EXPIRES_IN` | 7d | Token expiry duration |
 | `AI_SERVICE_URL` | `http://localhost:8000` | Python AI service URL |
 | `PDF_STORAGE_PATH` | `./pdfs` | Directory for generated PDFs |
-| `COLLEGE_NAME` | University College of Engineering | Name shown on PDF header |
+| `COLLEGE_NAME` | GL Bajaj Institute of Technology and Management | Name shown on PDF header |
 | `EMBEDDING_MODEL` | `sentence-transformers/all-MiniLM-L6-v2` | SentenceTransformer model for embeddings |
 | `LLM_MODEL` | `google/flan-t5-base` | HuggingFace model for question generation |
 
