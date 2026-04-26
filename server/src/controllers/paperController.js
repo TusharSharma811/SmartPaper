@@ -1,5 +1,5 @@
 import QuestionPaper from "../models/QuestionPaper.js";
-import { generateQuestions, validateAnalysis, extractUnits, analyzePaperPDF } from "../services/aiService.js";
+import { generateQuestions, validateAnalysis, detectSubjects, extractUnits, analyzePaperPDF } from "../services/aiService.js";
 import { generatePDF, getPDFPath } from "../services/pdfService.js";
 import { aggregateBlooms, aggregateCOs } from "../utils/analysisUtils.js";
 import logger from "../utils/logger.js";
@@ -269,16 +269,43 @@ const validatePaperAnalysis = async (req, res, next) => {
 };
 
 /**
+ * POST /api/papers/detect-subjects
+ * Detect subjects from an uploaded syllabus PDF.
+ */
+const detectSubjectsFromPDF = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        error: "Syllabus PDF file is required.",
+      });
+    }
+
+    const result = await detectSubjects(
+      req.file.buffer,
+      req.file.originalname
+    );
+
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * POST /api/papers/extract-units
  * Extract units from an uploaded syllabus PDF.
  */
 const extractUnitsFromPDF = async (req, res, next) => {
   try {
-    const { subject } = req.body;
-    if (!subject) {
+    const subject = req.body.subject || "";
+    if (!subject.trim()) {
       return res.status(400).json({
         success: false,
-        error: "Subject is required.",
+        error: "Subject selection is required before extracting units.",
       });
     }
     if (!req.file) {
@@ -411,4 +438,4 @@ const deletePaper = async (req, res, next) => {
   }
 };
 
-export { generatePaper, getPapers, getPaperById, getPaperPDF, getAnalysis, validatePaperAnalysis, extractUnitsFromPDF, analyzePaperPDFController, validateUploadedPaper, deletePaper };
+export { generatePaper, getPapers, getPaperById, getPaperPDF, getAnalysis, validatePaperAnalysis, detectSubjectsFromPDF, extractUnitsFromPDF, analyzePaperPDFController, validateUploadedPaper, deletePaper };

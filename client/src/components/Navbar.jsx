@@ -83,7 +83,6 @@ export default function Navbar() {
             >
               Analysis Tools
             </button>
-            {/* Question Bank — temporarily hidden
             <button 
               onClick={() => navigate('/question-bank')}
               style={{
@@ -97,7 +96,6 @@ export default function Navbar() {
             >
               Question Bank
             </button>
-            */}
           </div>
         )}
 

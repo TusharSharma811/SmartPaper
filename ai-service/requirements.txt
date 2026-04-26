@@ -9,3 +9,6 @@ langchain-chroma
 chromadb
 pypdf
 google-genai
+transformers
+torch
+sentencepiece

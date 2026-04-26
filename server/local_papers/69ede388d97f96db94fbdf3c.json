@@ -2,15 +2,14 @@
   "name": "",
   "metadata": {
     "exam": "Examination",
-    "subject": "Data Structures",
-    "subject_code": "BCS301",
+    "subject": "Theory of Automata and Formal Languages",
+    "subject_code": "BCS402",
     "duration": "3 Hours",
     "max_marks": 70
   },
   "instructions": [
     "Attempt all questions.",
-    "Each question carries equal marks within its section.",
-    "Assume suitable data where necessary."
+    "Each question carries equal marks within its section."
   ],
   "sections": [
     {
@@ -27,10 +26,10 @@
           "subquestions": [
             {
               "label": "1",
-              "text": "Define Big Oh notation and its significance in algorithm analysis.",
+              "text": "Define the terms 'Alphabet' and 'String' in the context of automata theory.",
               "marks": 2,
               "difficulty": "easy",
-              "topic": "Algorithm Efficiency",
+              "topic": "Basic Concepts and Automata Theory",
               "co": 1,
               "bloom_level": "K1"
             }
@@ -44,10 +43,10 @@
           "subquestions": [
             {
               "label": "2",
-              "text": "What is a Sparse Matrix? Mention one way to represent it in memory.",
+              "text": "State the formal definition of a Deterministic Finite Automaton (DFA).",
               "marks": 2,
               "difficulty": "easy",
-              "topic": "Arrays",
+              "topic": "Basic Concepts and Automata Theory",
               "co": 1,
               "bloom_level": "K1"
             }
@@ -61,10 +60,10 @@
           "subquestions": [
             {
               "label": "3",
-              "text": "List the primary advantages of a Circular Linked List over a Singly Linked List.",
+              "text": "Differentiate between a Moore Machine and a Mealy Machine.",
               "marks": 2,
               "difficulty": "easy",
-              "topic": "Linked lists",
+              "topic": "Finite Automata with output",
               "co": 1,
               "bloom_level": "K2"
             }
@@ -78,11 +77,11 @@
           "subquestions": [
             {
               "label": "4",
-              "text": "Define the term 'Abstract Data Type' (ADT) with an example.",
+              "text": "State Arden’s Theorem used in regular expressions.",
               "marks": 2,
               "difficulty": "easy",
-              "topic": "Abstract Data Types (ADT)",
-              "co": 1,
+              "topic": "Regular Expressions and Languages",
+              "co": 2,
               "bloom_level": "K1"
             }
           ],
@@ -95,11 +94,11 @@
           "subquestions": [
             {
               "label": "5",
-              "text": "What is a Priority Queue? Name its types.",
+              "text": "List any four closure properties of Regular Languages.",
               "marks": 2,
               "difficulty": "easy",
-              "topic": "Queues",
-              "co": 1,
+              "topic": "Regular and Non-Regular Languages",
+              "co": 2,
               "bloom_level": "K1"
             }
           ],
@@ -112,12 +111,12 @@
           "subquestions": [
             {
               "label": "6",
-              "text": "Explain the concept of 'Tail Recursion'.",
+              "text": "Define Context Free Grammar (CFG) and its components.",
               "marks": 2,
               "difficulty": "easy",
-              "topic": "Recursion",
-              "co": 4,
-              "bloom_level": "K2"
+              "topic": "Regular and Non-Regular Grammars",
+              "co": 3,
+              "bloom_level": "K1"
             }
           ],
           "options": []
@@ -129,12 +128,12 @@
           "subquestions": [
             {
               "label": "7",
-              "text": "Define collision in Hashing and list any two collision resolution techniques.",
+              "text": "Explain the concept of an ambiguous grammar.",
               "marks": 2,
               "difficulty": "easy",
-              "topic": "Hashing",
-              "co": 2,
-              "bloom_level": "K1"
+              "topic": "Regular and Non-Regular Grammars",
+              "co": 3,
+              "bloom_level": "K2"
             }
           ],
           "options": []
@@ -146,12 +145,12 @@
           "subquestions": [
             {
               "label": "8",
-              "text": "What is a Strictly Binary Tree? Distinguish it from a Complete Binary Tree.",
+              "text": "Define a Non-deterministic Pushdown Automaton (NPDA).",
               "marks": 2,
-              "difficulty": "medium",
-              "topic": "Trees",
-              "co": 3,
-              "bloom_level": "K2"
+              "difficulty": "easy",
+              "topic": "Push Down Automata and Properties of Context Free Languages",
+              "co": 4,
+              "bloom_level": "K1"
             }
           ],
           "options": []
@@ -163,11 +162,11 @@
           "subquestions": [
             {
               "label": "9",
-              "text": "Define a Spanning Tree and a Minimum Cost Spanning Tree.",
+              "text": "State the Church-Turing Thesis.",
               "marks": 2,
               "difficulty": "easy",
-              "topic": "Graphs",
-              "co": 3,
+              "topic": "Turing Machines and Recursive Function Theory",
+              "co": 5,
               "bloom_level": "K1"
             }
           ],
@@ -180,12 +179,12 @@
           "subquestions": [
             {
               "label": "10",
-              "text": "Identify the time complexity of Binary Search in the best and worst cases.",
+              "text": "What is meant by the Halting Problem of a Turing Machine?",
               "marks": 2,
               "difficulty": "easy",
-              "topic": "Searching",
-              "co": 2,
-              "bloom_level": "K1"
+              "topic": "Turing Machines and Recursive Function Theory",
+              "co": 5,
+              "bloom_level": "K2"
             }
           ],
           "options": []
@@ -194,7 +193,7 @@
     },
     {
       "section_id": "Section B",
-      "title": "Intermediate Answer Questions",
+      "title": "Medium Answer Questions",
       "description": "Answer the following questions in detail",
       "marks_scheme": "6 marks each",
       "attempt_rule": "Attempt all questions",
@@ -205,11 +204,11 @@
           "marks": 6,
           "subquestions": [
             {
-              "label": "11",
-              "text": "Explain the Row Major Order representation of a 2D array and derive the general formula for calculating the address of an element A[i][j].",
+              "label": "1",
+              "text": "Explain the step-by-step procedure to convert an NFA with ε-transitions to an equivalent NFA without ε-transitions.",
               "marks": 6,
               "difficulty": "medium",
-              "topic": "Arrays",
+              "topic": "Basic Concepts and Automata Theory",
               "co": 1,
               "bloom_level": "K2"
             }
@@ -222,13 +221,13 @@
           "marks": 6,
           "subquestions": [
             {
-              "label": "12",
-              "text": "Describe the algorithm for evaluating a postfix expression using a stack. Show the step-by-step evaluation for the expression: 5 6 2 + * 12 4 / -.",
+              "label": "2",
+              "text": "Describe the method for minimization of Finite Automata using the table filling algorithm.",
               "marks": 6,
               "difficulty": "medium",
-              "topic": "Stacks",
-              "co": 4,
-              "bloom_level": "K3"
+              "topic": "Basic Concepts and Automata Theory",
+              "co": 1,
+              "bloom_level": "K2"
             }
           ],
           "options": []
@@ -239,13 +238,13 @@
           "marks": 6,
           "subquestions": [
             {
-              "label": "13",
-              "text": "Explain the working of Quick Sort algorithm using the divide and conquer approach. Analyze its best-case and worst-case time complexity.",
+              "label": "3",
+              "text": "Explain the Pumping Lemma for Regular Languages and discuss its application in proving a language is non-regular.",
               "marks": 6,
               "difficulty": "medium",
-              "topic": "Sorting",
+              "topic": "Regular and Non-Regular Languages",
               "co": 2,
-              "bloom_level": "K2"
+              "bloom_level": "K3"
             }
           ],
           "options": []
@@ -256,11 +255,11 @@
           "marks": 6,
           "subquestions": [
             {
-              "label": "14",
-              "text": "Define a Binary Search Tree (BST). Explain the algorithm for deleting a node from a BST when the node has two children.",
+              "label": "4",
+              "text": "Compare Chomsky Normal Form (CNF) and Greibach Normal Form (GNF) with respect to their definitions and structures.",
               "marks": 6,
               "difficulty": "medium",
-              "topic": "Trees",
+              "topic": "Regular and Non-Regular Grammars",
               "co": 3,
               "bloom_level": "K2"
             }
@@ -273,13 +272,13 @@
           "marks": 6,
           "subquestions": [
             {
-              "label": "15",
-              "text": "Compare Breadth First Search (BFS) and Depth First Search (DFS) graph traversal techniques based on their data structures, logic, and complexity.",
+              "label": "5",
+              "text": "Explain the basic model and representation of a Turing Machine, including its transition function.",
               "marks": 6,
               "difficulty": "medium",
-              "topic": "Graphs",
-              "co": 3,
-              "bloom_level": "K4"
+              "topic": "Turing Machines and Recursive Function Theory",
+              "co": 5,
+              "bloom_level": "K2"
             }
           ],
           "options": []
@@ -289,56 +288,38 @@
     {
       "section_id": "Section C",
       "title": "Long Answer Questions",
-      "description": "Answer the following questions with detailed analysis",
+      "description": "Answer the following questions comprehensively",
       "marks_scheme": "10 marks each",
       "attempt_rule": "Attempt all questions",
       "questions": [
         {
           "question_id": 16,
-          "type": "subparts",
+          "type": "single",
           "marks": 10,
           "subquestions": [
             {
-              "label": "a",
-              "text": "Define an AVL Tree. Explain the four types of rotations (LL, RR, LR, RL) used to maintain balance in an AVL tree with suitable diagrams.",
-              "marks": 6,
+              "label": "1",
+              "text": "Explain the concept of equivalence between DFA and NFA. Describe the subset construction method to convert a given Non-Deterministic Finite Automaton (NFA) into its equivalent Deterministic Finite Automaton (DFA).",
+              "marks": 10,
               "difficulty": "hard",
-              "topic": "Trees",
-              "co": 3,
-              "bloom_level": "K2"
-            },
-            {
-              "label": "b",
-              "text": "Construct an AVL tree by inserting the following elements in order: 10, 20, 30, 40, 50, 25.",
-              "marks": 4,
-              "difficulty": "hard",
-              "topic": "Trees",
-              "co": 3,
-              "bloom_level": "K3"
+              "topic": "Basic Concepts and Automata Theory",
+              "co": 1,
+              "bloom_level": "K4"
             }
           ],
           "options": []
         },
         {
           "question_id": 17,
-          "type": "subparts",
+          "type": "single",
           "marks": 10,
           "subquestions": [
             {
-              "label": "a",
-              "text": "Explain Dijkstra’s algorithm for finding the shortest path from a single source to all other vertices in a weighted graph.",
-              "marks": 6,
+              "label": "2",
+              "text": "Explain the Chomsky Hierarchy of languages in detail. Provide a comparative analysis of Type 0, Type 1, Type 2, and Type 3 grammars along with their corresponding recognizing automata.",
+              "marks": 10,
               "difficulty": "hard",
-              "topic": "Graphs",
-              "co": 3,
-              "bloom_level": "K2"
-            },
-            {
-              "label": "b",
-              "text": "Compare Prim’s and Kruskal’s algorithms for finding the Minimum Spanning Tree (MST) of a graph.",
-              "marks": 4,
-              "difficulty": "medium",
-              "topic": "Graphs",
+              "topic": "Regular and Non-Regular Grammars",
               "co": 3,
               "bloom_level": "K4"
             }
@@ -370,9 +351,9 @@
   ],
   "difficulty": "Moderate (50%)",
   "createdBy": "69e3b544010eeba35c84cc5c",
-  "pdfUrl": "C:\\Users\\sharm\\OneDrive\\Desktop\\Projects\\MajorProject\\AI_QuestionPaper\\server\\pdfs\\69e4b536766f84e1f7f8b8b0.pdf",
-  "_id": "69e4b536766f84e1f7f8b8b0",
-  "createdAt": "2026-04-19T10:57:58.039Z",
-  "updatedAt": "2026-04-19T10:57:59.959Z",
+  "pdfUrl": "C:\\Users\\sharm\\OneDrive\\Desktop\\Projects\\MajorProject\\AI_QuestionPaper\\server\\pdfs\\69ede388d97f96db94fbdf3c.pdf",
+  "_id": "69ede388d97f96db94fbdf3c",
+  "createdAt": "2026-04-26T10:06:00.539Z",
+  "updatedAt": "2026-04-26T10:06:04.196Z",
   "__v": 0
 }

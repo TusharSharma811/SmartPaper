@@ -8,6 +8,7 @@ import {
   getPaperPDF,
   getAnalysis,
   validatePaperAnalysis,
+  detectSubjectsFromPDF,
   extractUnitsFromPDF,
   analyzePaperPDFController,
   validateUploadedPaper,
@@ -34,6 +35,9 @@ router.use(authMiddleware);
 
 // POST /api/papers/generate — generate a new question paper (multipart form)
 router.post("/generate", upload.single("syllabus_pdf"), generatePaper);
+
+// POST /api/papers/detect-subjects — detect subjects from syllabus PDF
+router.post("/detect-subjects", upload.single("syllabus_pdf"), detectSubjectsFromPDF);
 
 // POST /api/papers/extract-units — extract units from syllabus PDF
 router.post("/extract-units", upload.single("syllabus_pdf"), extractUnitsFromPDF);

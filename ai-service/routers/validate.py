@@ -1,5 +1,5 @@
 """
-POST /validate-analysis — use AI to validate Bloom's level and CO assignments.
+POST /validate-analysis - use AI to validate Bloom's level and CO assignments.
 
 Sends the full question paper data to Gemini and asks it to verify
 whether each question's bloom_level and CO are correctly assigned.
@@ -7,30 +7,40 @@ whether each question's bloom_level and CO are correctly assigned.
 
 import json
 import logging
-from typing import List, Optional, Dict, Any
+import re
+from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from google import genai
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.messages import SystemMessage, HumanMessage
 
 from config import GOOGLE_API_KEY, LLM_MODEL
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+BLOOM_LEVELS = {"K1", "K2", "K3", "K4", "K5", "K6"}
 
-
-# ── Request / Response models ────────────────────────────────────
 
 class SubQuestionIn(BaseModel):
     label: str
     text: str
     marks: int
+    difficulty: Optional[str] = None
+    topic: Optional[str] = None
     bloom_level: Optional[str] = None
-    co: Optional[int] = None
+    co: Optional[Any] = None
+
+
+class ChoiceOptionIn(BaseModel):
+    label: str
+    text: str
+    marks: int
+    difficulty: Optional[str] = None
+    topic: Optional[str] = None
+    bloom_level: Optional[str] = None
+    co: Optional[Any] = None
 
 
 class QuestionIn(BaseModel):
@@ -38,6 +48,7 @@ class QuestionIn(BaseModel):
     type: str
     marks: int
     subquestions: Optional[List[SubQuestionIn]] = None
+    options: Optional[List[ChoiceOptionIn]] = None
 
 
 class SectionIn(BaseModel):
@@ -73,29 +84,200 @@ class ValidateResponse(BaseModel):
     summary: str
 
 
-# ── Validation logic ─────────────────────────────────────────────
+def _normalize_label(value: Any) -> str:
+    return str(value or "").strip()
 
-def _build_questions_text(sections: List[SectionIn]) -> str:
-    """Flatten all questions into a numbered text for the prompt."""
-    lines = []
+
+def _normalize_text(value: Any) -> str:
+    return re.sub(r"\s+", " ", str(value or "").strip())
+
+
+def _normalize_int(value: Any) -> Optional[int]:
+    if value in (None, "") or isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return int(value)
+
+    match = re.search(r"\d+", str(value))
+    return int(match.group(0)) if match else None
+
+
+def _normalize_bloom(value: Any) -> Optional[str]:
+    text = str(value or "").strip().upper()
+    if not text:
+        return None
+    if text in BLOOM_LEVELS:
+        return text
+
+    match = re.search(r"\bK?\s*([1-6])\b", text)
+    if match:
+        return f"K{match.group(1)}"
+    return None
+
+
+def _normalize_co(value: Any) -> Optional[int]:
+    if value in (None, "") or isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return int(value)
+
+    match = re.search(r"\b(?:CO)?\s*([1-9]\d*)\b", str(value).strip(), re.IGNORECASE)
+    return int(match.group(1)) if match else None
+
+
+def _coerce_bool(value: Any, default: Optional[bool] = None) -> Optional[bool]:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
+        return bool(value)
+    if isinstance(value, str):
+        text = value.strip().lower()
+        if text in {"true", "yes", "y", "correct"}:
+            return True
+        if text in {"false", "no", "n", "incorrect"}:
+            return False
+    return default
+
+
+def _correction_key(question_id: int, sub_label: str) -> str:
+    return f"{question_id}:{_normalize_label(sub_label).lower()}"
+
+
+def _collect_leaf_questions(sections: List[SectionIn]) -> List[Dict[str, Any]]:
+    """
+    Flatten the paper into the actual question leaves that carry CO/Bloom data.
+
+    This keeps validation aligned with the charting and preview layers, and makes
+    single, subpart, and uploaded paper shapes work through the same path.
+    """
+    leaf_questions: List[Dict[str, Any]] = []
+
     for section in sections:
-        for q in section.questions:
-            for sq in (q.subquestions or []):
-                lines.append(
-                    f"Q{q.question_id}-{sq.label}: \"{sq.text}\" "
-                    f"[{sq.marks}m, bloom={sq.bloom_level or 'NONE'}, co={sq.co or 'NONE'}]"
+        for question in section.questions:
+            items: List[Any] = list(question.subquestions or [])
+            if question.type == "single" and items:
+                items = items[:1]
+            elif question.type == "choice_group" and not items:
+                items = list(question.options or [])
+
+            for index, item in enumerate(items):
+                label = _normalize_label(getattr(item, "label", "")) or (
+                    str(question.question_id)
+                    if question.type == "single" and index == 0
+                    else chr(97 + index)
                 )
+                question_text = _normalize_text(getattr(item, "text", ""))
+                if not question_text:
+                    continue
+
+                question_id = int(question.question_id)
+                leaf_questions.append({
+                    "key": _correction_key(question_id, label),
+                    "ref": f"Q{question_id}-{label}",
+                    "question_id": question_id,
+                    "sub_label": label,
+                    "question_text": question_text,
+                    "marks": int(getattr(item, "marks", None) or question.marks or 0),
+                    "current_bloom": _normalize_bloom(getattr(item, "bloom_level", None)),
+                    "current_co": _normalize_co(getattr(item, "co", None)),
+                    "section_id": section.section_id,
+                    "topic": _normalize_text(getattr(item, "topic", "")) or None,
+                    "difficulty": _normalize_text(getattr(item, "difficulty", "")) or None,
+                })
+
+    return leaf_questions
+
+
+def _build_questions_text(leaf_questions: List[Dict[str, Any]]) -> str:
+    """Build the prompt body from normalized leaf questions."""
+    lines = []
+    for item in leaf_questions:
+        details = [
+            f"section={item['section_id']}",
+            f"{item['marks']}m",
+            f"bloom={item['current_bloom'] or 'NONE'}",
+            f"co={item['current_co'] if item['current_co'] is not None else 'NONE'}",
+        ]
+        if item["topic"]:
+            details.append(f"topic={item['topic']}")
+        if item["difficulty"]:
+            details.append(f"difficulty={item['difficulty']}")
+
+        lines.append(
+            f'{item["ref"]}: "{item["question_text"]}" [{", ".join(details)}]'
+        )
     return "\n".join(lines)
 
 
-def _parse_json_response(raw_text: str) -> Dict[str, Any]:
-    """Parse JSON from LLM response, stripping markdown fences if present."""
-    text = raw_text.strip()
+def _parse_json_response(raw_text: Any) -> Any:
+    """Parse JSON from the model response, handling fenced or noisy text."""
+    if isinstance(raw_text, (dict, list)):
+        return raw_text
+
+    text = str(raw_text or "").strip()
     if text.startswith("```"):
         text = text.split("\n", 1)[1]
         if text.endswith("```"):
             text = text[:-3].strip()
-    return json.loads(text)
+
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        match = re.search(r"\{.*\}", text, re.DOTALL)
+        if not match:
+            raise
+        return json.loads(match.group(0))
+
+
+def _resolve_correction(raw_item: Dict[str, Any], source_item: Dict[str, Any]) -> CorrectionItem:
+    current_bloom = _normalize_bloom(raw_item.get("current_bloom")) or source_item["current_bloom"]
+    suggested_bloom = _normalize_bloom(raw_item.get("suggested_bloom"))
+    current_co = _normalize_co(raw_item.get("current_co"))
+    if current_co is None:
+        current_co = source_item["current_co"]
+    suggested_co = _normalize_co(raw_item.get("suggested_co"))
+
+    bloom_correct = _coerce_bool(raw_item.get("bloom_correct"))
+    if bloom_correct is None:
+        bloom_correct = suggested_bloom in (None, current_bloom)
+    if bloom_correct and suggested_bloom == current_bloom:
+        suggested_bloom = None
+
+    co_correct = _coerce_bool(raw_item.get("co_correct"))
+    if co_correct is None:
+        co_correct = suggested_co in (None, current_co)
+    if co_correct and suggested_co == current_co:
+        suggested_co = None
+
+    return CorrectionItem(
+        question_id=source_item["question_id"],
+        sub_label=source_item["sub_label"],
+        question_text=source_item["question_text"],
+        current_bloom=current_bloom,
+        suggested_bloom=suggested_bloom,
+        bloom_correct=bloom_correct,
+        bloom_reason=_normalize_text(raw_item.get("bloom_reason")) or None,
+        current_co=current_co,
+        suggested_co=suggested_co,
+        co_correct=co_correct,
+        co_reason=_normalize_text(raw_item.get("co_reason")) or None,
+    )
+
+
+def _default_correction(source_item: Dict[str, Any]) -> CorrectionItem:
+    return CorrectionItem(
+        question_id=source_item["question_id"],
+        sub_label=source_item["sub_label"],
+        question_text=source_item["question_text"],
+        current_bloom=source_item["current_bloom"],
+        suggested_bloom=None,
+        bloom_correct=True,
+        bloom_reason="No change suggested by AI.",
+        current_co=source_item["current_co"],
+        suggested_co=None,
+        co_correct=True,
+        co_reason="No change suggested by AI.",
+    )
 
 
 @router.post("/validate-analysis", response_model=ValidateResponse)
@@ -105,7 +287,8 @@ async def validate_analysis(req: ValidateRequest):
     using the Gemini LLM.
     """
     try:
-        questions_text = _build_questions_text(req.sections)
+        leaf_questions = _collect_leaf_questions(req.sections)
+        questions_text = _build_questions_text(leaf_questions)
 
         if not questions_text.strip():
             return ValidateResponse(
@@ -119,7 +302,7 @@ async def validate_analysis(req: ValidateRequest):
         system_text = (
             "You are an expert academic quality assurance reviewer.\n"
             "Your task is to verify whether each question in an exam paper has the "
-            "CORRECT Bloom's taxonomy level (K1-K6) and Course Outcome (CO) assignment.\n\n"
+            "correct Bloom's taxonomy level (K1-K6) and Course Outcome (CO) assignment.\n\n"
             "Bloom's Taxonomy Levels:\n"
             "  K1 = Remember (recall facts, definitions)\n"
             "  K2 = Understand (explain, describe, interpret)\n"
@@ -129,12 +312,15 @@ async def validate_analysis(req: ValidateRequest):
             "  K6 = Create (design, construct, produce something new)\n\n"
             "CO Assignment Rules:\n"
             "  - CO numbers should logically group questions by the learning outcome they assess\n"
-            "  - Related topics/concepts should share the same CO\n"
+            "  - Related topics and concepts should share the same CO\n"
             "  - Each CO should cover a coherent area of the syllabus\n\n"
-            "For each question, determine if the assigned bloom_level and co are correct.\n"
-            "If incorrect, provide the suggested correct value and a brief reason.\n\n"
-            "Return ONLY valid JSON — no markdown, no code fences, no explanation.\n"
-            "Return in this exact format:\n"
+            "You must return exactly one result object for every question provided.\n"
+            "If the current assignment is correct, keep bloom_correct/co_correct as true "
+            "and set the corresponding suggested value to null.\n"
+            "If the current assignment is incorrect, provide the suggested correct value "
+            "and a brief reason.\n"
+            "Keep question_id and sub_label exactly the same as provided.\n\n"
+            "Return only valid JSON with this structure:\n"
             "{\n"
             '  "corrections": [\n'
             "    {\n"
@@ -146,69 +332,125 @@ async def validate_analysis(req: ValidateRequest):
             '      "bloom_correct": false,\n'
             '      "bloom_reason": "This question asks to explain, not just recall",\n'
             '      "current_co": 1,\n'
-            '      "suggested_co": 1,\n'
-            '      "co_correct": true,\n'
-            '      "co_reason": null\n'
+            '      "suggested_co": 2,\n'
+            '      "co_correct": false,\n'
+            '      "co_reason": "This topic aligns with a different learning outcome"\n'
             "    }\n"
             "  ],\n"
             '  "summary": "Brief overall assessment of the paper\'s bloom/CO assignments"\n'
             "}"
         )
 
+        required_refs = ", ".join(item["ref"] for item in leaf_questions)
         human_text = (
             f"Subject: {req.subject}\n\n"
             f"Questions to validate:\n{questions_text}\n\n"
-            "Analyze each question above and check if the bloom_level and co "
-            "assignments are correct. Return corrections for ALL questions, "
-            "marking bloom_correct=true/false and co_correct=true/false for each."
+            "Analyze each question above and check whether the assigned Bloom level "
+            "and CO are correct. Return corrections for all questions.\n"
+            f"Required question keys (do not omit any): {required_refs}"
         )
 
-        logger.info("Validating CO/Bloom assignments for %s", req.subject)
+        logger.info(
+            "Validating CO/Bloom assignments for %s (%d questions)",
+            req.subject,
+            len(leaf_questions),
+        )
 
-        llm = ChatGoogleGenerativeAI(
+        client = genai.Client(api_key=GOOGLE_API_KEY)
+        response = client.models.generate_content(
             model=LLM_MODEL,
-            google_api_key=GOOGLE_API_KEY,
-            temperature=0.3,
+            contents=[human_text],
+            config=genai.types.GenerateContentConfig(
+                system_instruction=system_text,
+                temperature=0.2,
+                response_mime_type="application/json",
+                max_output_tokens=8192,
+            ),
         )
 
-        messages = [
-            SystemMessage(content=system_text),
-            HumanMessage(content=human_text),
-        ]
-
-        response = await llm.ainvoke(messages)
-        result = _parse_json_response(response.content)
+        result = _parse_json_response(getattr(response, "text", None) or response)
+        if isinstance(result, list):
+            result = {"corrections": result, "summary": "Validation complete."}
 
         corrections_raw = result.get("corrections", [])
-        corrections = []
-        for c in corrections_raw:
-            corrections.append(CorrectionItem(
-                question_id=c.get("question_id", 0),
-                sub_label=c.get("sub_label", ""),
-                question_text=c.get("question_text", ""),
-                current_bloom=c.get("current_bloom"),
-                suggested_bloom=c.get("suggested_bloom"),
-                bloom_correct=c.get("bloom_correct", True),
-                bloom_reason=c.get("bloom_reason"),
-                current_co=c.get("current_co"),
-                suggested_co=c.get("suggested_co"),
-                co_correct=c.get("co_correct", True),
-                co_reason=c.get("co_reason"),
-            ))
+        if not corrections_raw:
+            raise HTTPException(
+                status_code=500,
+                detail="AI did not return any validation results.",
+            )
 
-        issues = sum(1 for c in corrections if not c.bloom_correct or not c.co_correct)
+        by_key = {item["key"]: item for item in leaf_questions}
+        by_question_id: Dict[int, List[Dict[str, Any]]] = {}
+        for item in leaf_questions:
+            by_question_id.setdefault(item["question_id"], []).append(item)
+
+        matched: Dict[str, CorrectionItem] = {}
+        for raw_item in corrections_raw:
+            if not isinstance(raw_item, dict):
+                continue
+
+            question_id = _normalize_int(raw_item.get("question_id"))
+            sub_label = _normalize_label(raw_item.get("sub_label"))
+            source_item = None
+
+            if question_id is not None and sub_label:
+                source_item = by_key.get(_correction_key(question_id, sub_label))
+
+            if source_item is None and question_id is not None:
+                candidates = by_question_id.get(question_id, [])
+                if len(candidates) == 1:
+                    source_item = candidates[0]
+                elif raw_item.get("question_text"):
+                    raw_text = _normalize_text(raw_item.get("question_text")).lower()
+                    for candidate in candidates:
+                        if candidate["question_text"].lower() == raw_text:
+                            source_item = candidate
+                            break
+
+            if source_item is None:
+                continue
+
+            matched[source_item["key"]] = _resolve_correction(raw_item, source_item)
+
+        if not matched:
+            raise HTTPException(
+                status_code=500,
+                detail="AI returned validation results, but they could not be matched to the paper questions.",
+            )
+
+        corrections: List[CorrectionItem] = []
+        missing_count = 0
+        for item in leaf_questions:
+            correction = matched.get(item["key"])
+            if correction is None:
+                missing_count += 1
+                correction = _default_correction(item)
+            corrections.append(correction)
+
+        issues = sum(1 for item in corrections if not item.bloom_correct or not item.co_correct)
+        summary = _normalize_text(result.get("summary")) or "Validation complete."
+        if missing_count:
+            summary += (
+                f" Detailed feedback was unavailable for {missing_count} question(s), "
+                "so their current assignments were retained."
+            )
 
         return ValidateResponse(
             overall_valid=issues == 0,
             total_questions=len(corrections),
             issues_found=issues,
             corrections=corrections,
-            summary=result.get("summary", "Validation complete."),
+            summary=summary,
         )
 
-    except json.JSONDecodeError as e:
-        logger.error("Failed to parse validation response: %s", e)
-        raise HTTPException(status_code=500, detail="AI returned invalid JSON for validation.")
-    except Exception as e:
-        logger.error("Validation failed: %s", e)
-        raise HTTPException(status_code=500, detail=f"Validation failed: {str(e)}")
+    except json.JSONDecodeError as exc:
+        logger.error("Failed to parse validation response: %s", exc)
+        raise HTTPException(
+            status_code=500,
+            detail="AI returned invalid JSON for validation.",
+        )
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Validation failed: %s", exc)
+        raise HTTPException(status_code=500, detail=f"Validation failed: {str(exc)}")

@@ -59,7 +59,7 @@ const generateQuestions = async ({
       if (instructions && instructions.length > 0) {
         form.append("instructions", JSON.stringify(instructions));
       }
-      
+
       if (topics && topics.length > 0) {
         form.append("topics", JSON.stringify(topics));
       }
@@ -177,6 +177,54 @@ const validateAnalysis = async (subject, sections) => {
 };
 
 /**
+ * Detect subject names/codes from a syllabus PDF via the Python AI service.
+ *
+ * @param {Buffer} pdfBuffer — raw PDF file buffer
+ * @param {string} pdfFilename — original filename
+ * @returns {Object} — { subjects: [{ name, subject_code }], total_subjects }
+ */
+const detectSubjects = async (pdfBuffer, pdfFilename) => {
+  try {
+    const form = new FormData();
+    form.append("syllabus_pdf", pdfBuffer, {
+      filename: pdfFilename || "syllabus.pdf",
+      contentType: "application/pdf",
+    });
+
+    const response = await axios.post(
+      `${AI_SERVICE_URL()}/detect-subjects`,
+      form,
+      {
+        timeout: AI_TIMEOUT,
+        headers: form.getHeaders(),
+      }
+    );
+    logger.info("Subject detection completed successfully");
+    return response.data;
+  } catch (error) {
+    // Provide actionable error messages
+    let msg;
+    let statusCode;
+
+    if (error.code === "ECONNREFUSED" || error.code === "ECONNRESET" || error.code === "ENOTFOUND") {
+      msg = "AI service is not running. Please start the Python AI service (uvicorn) on port 8000.";
+      statusCode = 503;
+    } else if (error.response?.status === 404) {
+      msg = "AI service endpoint /detect-subjects not found. Please restart the AI service to load the latest routes.";
+      statusCode = 502;
+    } else {
+      msg = error.response?.data?.detail || error.message;
+      statusCode = error.response?.status || 502;
+    }
+
+    logger.error(`Subject detection failed: ${msg}`);
+    const err = new Error(`AI subject detection failed: ${msg}`);
+    err.statusCode = statusCode;
+    throw err;
+  }
+};
+
+/**
  * Extract units/modules from a syllabus PDF via the Python AI service.
  *
  * @param {string} subject   — subject name
@@ -249,4 +297,4 @@ const analyzePaperPDF = async (subject, pdfBuffer, pdfFilename) => {
   }
 };
 
-export { generateQuestions, addQuestions, searchQuestions, validateAnalysis, extractUnits, analyzePaperPDF };
+export { generateQuestions, addQuestions, searchQuestions, validateAnalysis, detectSubjects, extractUnits, analyzePaperPDF };

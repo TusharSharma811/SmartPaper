@@ -21,6 +21,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_core.output_parsers import JsonOutputParser
 
 from config import GOOGLE_API_KEY, LLM_MODEL
+from rag.paraphraser import paraphrase_generated_paper
 from rag.vector_store import search as vector_search
 
 logger = logging.getLogger(__name__)
@@ -238,9 +239,15 @@ def _get_rag_context(subject: str, topics: Optional[List[str]], top_k: int = 10)
         return ""
 
 
-def _parse_json_response(raw_text: str) -> Dict[str, Any]:
+def _parse_json_response(raw_text) -> Dict[str, Any]:
     """Parse JSON from LLM response, stripping markdown fences if present."""
-    text = raw_text.strip()
+    # Handle cases where LangChain returns a list of content parts instead of a string
+    if isinstance(raw_text, list):
+        raw_text = " ".join(
+            part if isinstance(part, str) else part.get("text", str(part))
+            for part in raw_text
+        )
+    text = str(raw_text).strip()
     if text.startswith("```"):
         text = text.split("\n", 1)[1]
         if text.endswith("```"):
@@ -332,6 +339,8 @@ async def generate(
         parser = JsonOutputParser()
         response = await llm.ainvoke(messages)
         result = parser.parse(response.content)
+
+    result = paraphrase_generated_paper(result)
 
     logger.info(
         "Paper generated — %d sections, %d total marks",

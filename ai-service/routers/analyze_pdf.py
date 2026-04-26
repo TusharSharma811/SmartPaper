@@ -57,9 +57,15 @@ EXAMPLE_OUTPUT = """{
 }"""
 
 
-def _parse_json_response(raw_text: str) -> dict:
+def _parse_json_response(raw_text) -> dict:
     """Parse JSON from LLM response, stripping markdown fences if present."""
-    text = raw_text.strip()
+    # Handle cases where LangChain returns a list of content parts instead of a string
+    if isinstance(raw_text, list):
+        raw_text = " ".join(
+            part if isinstance(part, str) else part.get("text", str(part))
+            for part in raw_text
+        )
+    text = str(raw_text).strip()
     if text.startswith("```"):
         text = text.split("\n", 1)[1]
         if text.endswith("```"):

@@ -4,20 +4,49 @@ import PaperPreviewModal from '../components/PaperPreviewModal'
 import AnalysisCharts from '../components/AnalysisCharts'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../components/Toast'
-import { useNavigate } from 'react-router-dom'
 
-const SUBJECTS = [
-  'Data Structures',
-  'Operating Systems',
-  'Computer Networks',
-  'Database Management Systems',
-  'Design and Analysis of Algorithms',
-  'Artificial Intelligence',
-  'Machine Learning',
-  'Compiler Design',
-  'Software Engineering',
-  'Theory of Computation',
-]
+// Subject is now auto-detected from the uploaded syllabus PDF
+
+const normalizeTopics = (topics) => {
+  if (Array.isArray(topics)) {
+    return topics.map(topic => `${topic ?? ''}`.trim()).filter(Boolean)
+  }
+  if (typeof topics === 'string') {
+    return topics
+      .split(/[,;\n]+/)
+      .map(topic => topic.trim())
+      .filter(Boolean)
+  }
+  return []
+}
+
+const normalizeUnits = (units = []) =>
+  (Array.isArray(units) ? units : []).map((unit, index) => ({
+    unit_number: Number(unit?.unit_number) || index + 1,
+    title: unit?.title || `Unit ${index + 1}`,
+    topics: normalizeTopics(unit?.topics),
+  }))
+
+const normalizeDetectedSubjects = (payload) => {
+  const rawSubjects = Array.isArray(payload?.subjects) && payload.subjects.length > 0
+    ? payload.subjects
+    : ((payload?.detected_subject || payload?.subject || (payload?.units || []).length > 0)
+      ? [{
+          name: payload?.detected_subject || payload?.subject || '',
+          subject_code: payload?.detected_subject_code || '',
+          units: payload?.units || [],
+        }]
+      : [])
+
+  return rawSubjects
+    .map((item, index) => ({
+      id: `${item?.subject_code || item?.name || 'subject'}-${index}`,
+      name: `${item?.name || item?.subject || item?.detected_subject || ''}`.trim(),
+      subject_code: `${item?.subject_code || item?.detected_subject_code || ''}`.trim(),
+      units: normalizeUnits(item?.units),
+    }))
+    .filter(item => item.name || item.units.length > 0)
+}
 
 const DEFAULT_PATTERN = [
   { section: 'A', questions: 10, marksEach: 2, questionType: 'single' },
@@ -27,7 +56,6 @@ const DEFAULT_PATTERN = [
 
 export default function GeneratorPage() {
   const { api } = useAuth()
-  const navigate = useNavigate()
   const toast = useToast()
   const fileInputRef = useRef(null)
 
@@ -36,12 +64,15 @@ export default function GeneratorPage() {
   const [examName, setExamName] = useState('')
   const [subjectCode, setSubjectCode] = useState('')
   const [duration, setDuration] = useState('3 Hours')
-  const [subject, setSubject] = useState(SUBJECTS[0])
+  const [subject, setSubject] = useState('')
   const [difficulty, setDifficulty] = useState('50') // 1 to 100 percentage
   const [questionStyle, setQuestionStyle] = useState('direct') // direct vs twisted
   const [pattern, setPattern] = useState(DEFAULT_PATTERN)
   const [syllabusFile, setSyllabusFile] = useState(null)
   const [dragOver, setDragOver] = useState(false)
+  const [detectedSubjects, setDetectedSubjects] = useState([])
+  const [detectingSubjects, setDetectingSubjects] = useState(false)
+  const [subjectDetectError, setSubjectDetectError] = useState('')
 
   // Unit selection state
   const [extractedUnits, setExtractedUnits] = useState([])
@@ -119,22 +150,89 @@ export default function GeneratorPage() {
     if (file && file.type === 'application/pdf') {
       setSyllabusFile(file)
       setError('')
-      // Auto-extract units from the PDF
-      handleExtractUnits(file)
+      setSubject('')
+      setSubjectCode('')
+      setDetectedSubjects([])
+      setSubjectDetectError('')
+      setExtractedUnits([])
+      setSelectedUnits([])
+      setExtractError('')
+      handleDetectSubjects(file)
     } else if (file) {
       toast.error('Please upload a PDF file only.')
     }
   }
 
+  const selectDetectedSubject = (selectedSubjectName, subjectsList = detectedSubjects) => {
+    const subjectName = `${selectedSubjectName ?? ''}`.trim()
+    if (!subjectName) {
+      setSubject('')
+      setSubjectCode('')
+      return null
+    }
+
+    const nextSubject = subjectsList.find(item => item.name === subjectName) || null
+    if (!nextSubject) return null
+
+    setSubject(nextSubject.name)
+    setSubjectCode(nextSubject.subject_code || '')
+    return nextSubject
+  }
+
+  const handleDetectSubjects = async (file) => {
+    setDetectingSubjects(true)
+    setSubjectDetectError('')
+    setDetectedSubjects([])
+    setExtractingUnits(false)
+    setExtractError('')
+    setExtractedUnits([])
+    setSelectedUnits([])
+    try {
+      const formData = new FormData()
+      formData.append('syllabus_pdf', file)
+
+      const { data } = await api.post('/papers/detect-subjects', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 120000,
+      })
+
+      const subjectsFromPdf = normalizeDetectedSubjects(data.data)
+      if (data.success && subjectsFromPdf.length > 0) {
+        setDetectedSubjects(subjectsFromPdf)
+
+        if (subjectsFromPdf.length === 1) {
+          const onlySubject = selectDetectedSubject(subjectsFromPdf[0].name, subjectsFromPdf)
+          setDetectingSubjects(false)
+          if (onlySubject?.name) {
+            await handleExtractUnits(file, onlySubject.name)
+            return
+          }
+        }
+      } else {
+        setSubjectDetectError('No subjects could be detected from this PDF.')
+        toast.warning('No subjects could be detected from this PDF.')
+      }
+    } catch (err) {
+      const msg = err.response?.data?.error || err.message || 'Failed to detect subjects'
+      setSubjectDetectError(msg)
+      toast.error(msg)
+    } finally {
+      setDetectingSubjects(false)
+    }
+  }
+
   // Extract units from syllabus PDF
-  const handleExtractUnits = async (file) => {
+  const handleExtractUnits = async (file, selectedSubject = subject) => {
+    const subjectName = `${selectedSubject ?? ''}`.trim()
+    if (!subjectName) return
+
     setExtractingUnits(true)
     setExtractError('')
     setExtractedUnits([])
     setSelectedUnits([])
     try {
       const formData = new FormData()
-      formData.append('subject', subject)
+      formData.append('subject', subjectName)
       formData.append('syllabus_pdf', file)
 
       const { data } = await api.post('/papers/extract-units', formData, {
@@ -143,12 +241,18 @@ export default function GeneratorPage() {
       })
 
       if (data.success && data.data?.units?.length > 0) {
-        setExtractedUnits(data.data.units)
-        // Select all units by default
-        setSelectedUnits(data.data.units.map(u => u.unit_number))
+        const normalizedUnits = normalizeUnits(data.data.units)
+        setExtractedUnits(normalizedUnits)
+        setSelectedUnits(normalizedUnits.map(unit => unit.unit_number))
+        if (data.data.detected_subject) {
+          setSubject(data.data.detected_subject)
+        }
+        if (data.data.detected_subject_code) {
+          setSubjectCode(data.data.detected_subject_code)
+        }
       } else {
-        setExtractError('No units could be extracted from this PDF.')
-        toast.warning('No units could be extracted from this PDF.')
+        setExtractError(`No units could be extracted for ${subjectName}.`)
+        toast.warning(`No units could be extracted for ${subjectName}.`)
       }
     } catch (err) {
       const msg = err.response?.data?.error || err.message || 'Failed to extract units'
@@ -157,6 +261,21 @@ export default function GeneratorPage() {
     } finally {
       setExtractingUnits(false)
     }
+  }
+
+  const handleSubjectChange = (e) => {
+    const nextSubject = e.target.value
+    if (detectedSubjects.length > 0) {
+      const detectedSubject = selectDetectedSubject(nextSubject)
+      setExtractError('')
+      setExtractedUnits([])
+      setSelectedUnits([])
+      if (syllabusFile && detectedSubject?.name) {
+        handleExtractUnits(syllabusFile, detectedSubject.name)
+      }
+      return
+    }
+    setSubject(nextSubject)
   }
 
   // Toggle a specific unit
@@ -186,6 +305,23 @@ export default function GeneratorPage() {
 
   // Generate paper
   const handleGenerate = async () => {
+    // Validate: syllabus PDF is mandatory
+    if (!syllabusFile) {
+      toast.error('Please upload a syllabus PDF before generating.')
+      return
+    }
+
+    if (detectingSubjects) {
+      toast.warning('Please wait until subject detection is complete.')
+      return
+    }
+
+    // Validate: subject is required
+    if (!subject.trim()) {
+      toast.error('Subject name is required. Upload a syllabus to auto-detect or enter manually.')
+      return
+    }
+
     // Validate: if units were extracted, at least 1 must be selected
     if (extractedUnits.length > 0 && selectedUnits.length === 0) {
       toast.error('Please select at least 1 unit for paper generation.')
@@ -351,24 +487,86 @@ export default function GeneratorPage() {
                 </div>
               </div>
 
-              {/* Subject */}
+              {/* Subject - auto-detected from syllabus */}
               <div style={{ marginBottom: '24px' }}>
-                <label className="form-label">Subject</label>
-                <select
-                  className="input-field"
-                  value={subject}
-                  onChange={(e) => setSubject(e.target.value)}
-                  disabled={loading}
-                >
-                  {SUBJECTS.map(s => (
-                    <option key={s} value={s}>{s}</option>
-                  ))}
-                </select>
+                <label className="form-label">
+                  Subject
+                  {detectedSubjects.length > 0 && subject && (
+                    <span style={{
+                      marginLeft: '8px',
+                      fontSize: '0.75rem',
+                      fontWeight: 500,
+                      color: 'var(--success)',
+                      background: 'rgba(16, 185, 129, 0.08)',
+                      padding: '2px 8px',
+                      borderRadius: '4px',
+                    }}>
+                      Auto-detected
+                    </span>
+                  )}
+                </label>
+                {detectingSubjects ? (
+                  <input
+                    type="text"
+                    className="input-field"
+                    placeholder="Detecting subjects from syllabus..."
+                    value=""
+                    disabled
+                  />
+                ) : detectedSubjects.length > 0 ? (
+                  <select
+                    className="input-field"
+                    value={subject}
+                    onChange={handleSubjectChange}
+                    disabled={loading || extractingUnits || detectingSubjects}
+                    style={{
+                      borderColor: !subject.trim() && syllabusFile && !extractingUnits ? 'var(--warning)' : undefined,
+                    }}
+                  >
+                    {detectedSubjects.length > 1 && (
+                      <option value="">Select detected subject</option>
+                    )}
+                    {detectedSubjects.map(item => (
+                      <option key={item.id} value={item.name}>
+                        {item.name}{item.subject_code ? ` (${item.subject_code})` : ''}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    className="input-field"
+                    placeholder={syllabusFile ? 'Upload detected. Waiting for subject detection...' : 'Upload syllabus to auto-detect subject'}
+                    value={subject}
+                    onChange={handleSubjectChange}
+                    disabled={loading}
+                    style={{
+                      borderColor: !subject.trim() && syllabusFile && !extractingUnits ? 'var(--warning)' : undefined,
+                    }}
+                  />
+                )}
+                {detectedSubjects.length > 1 && (
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '6px' }}>
+                    Select one of the {detectedSubjects.length} subjects detected in this PDF. Units will load after selection.
+                  </p>
+                )}
+                {subjectDetectError && (
+                  <p style={{ fontSize: '0.75rem', color: 'var(--error)', marginTop: '6px' }}>
+                    {subjectDetectError}
+                  </p>
+                )}
+                {!syllabusFile && (
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '6px' }}>
+                    Upload a syllabus PDF below - the subject name will be auto-detected
+                  </p>
+                )}
               </div>
 
-              {/* Syllabus Upload */}
+              {/* Syllabus Upload - REQUIRED */}
               <div style={{ marginBottom: '24px' }}>
-                <label className="form-label">Upload Syllabus PDF</label>
+                <label className="form-label">
+                  Upload Syllabus PDF <span style={{ color: 'var(--error)', fontWeight: 600 }}>*</span>
+                </label>
                 <div
                   className={`drop-zone ${dragOver ? 'drag-over' : ''} ${syllabusFile ? 'has-file' : ''}`}
                   onClick={() => fileInputRef.current?.click()}
@@ -407,15 +605,30 @@ export default function GeneratorPage() {
                 </div>
               </div>
 
-              {/* Unit Selector — shown after syllabus extraction */}
+              {/* Unit Selector - shown after syllabus extraction */}
               {syllabusFile && (
                 <div style={{ marginBottom: '24px' }}>
-                  {extractingUnits ? (
+                  {detectingSubjects ? (
                     <div className="glass-card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <div className="spinner" style={{ width: '18px', height: '18px', borderWidth: '2px', borderColor: 'var(--accent)', borderTopColor: 'transparent' }}></div>
                       <div>
-                        <p style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.9rem' }}>Extracting units from syllabus...</p>
-                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>AI is analyzing the PDF structure</p>
+                        <p style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.9rem' }}>Detecting subjects from syllabus...</p>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>AI is identifying all subjects present in the PDF</p>
+                      </div>
+                    </div>
+                  ) : detectedSubjects.length > 1 && !subject ? (
+                    <div className="glass-card" style={{ padding: '20px' }}>
+                      <p style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.9rem' }}>Select a subject to continue</p>
+                      <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+                        Unit extraction will start after you choose one of the detected subjects above.
+                      </p>
+                    </div>
+                  ) : extractingUnits ? (
+                    <div className="glass-card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <div className="spinner" style={{ width: '18px', height: '18px', borderWidth: '2px', borderColor: 'var(--accent)', borderTopColor: 'transparent' }}></div>
+                      <div>
+                        <p style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.9rem' }}>Extracting units for {subject || 'selected subject'}...</p>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>AI is analyzing the selected subject section of the PDF</p>
                       </div>
                     </div>
                   ) : extractError ? (
@@ -437,7 +650,7 @@ export default function GeneratorPage() {
                             📚 Syllabus Units ({extractedUnits.length} found)
                           </span>
                           <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginLeft: '8px' }}>
-                            Select units to generate questions from
+                            {subject ? `Showing units for ${subject}` : 'Select units to generate questions from'}
                           </span>
                         </div>
                         <button
@@ -781,7 +994,7 @@ export default function GeneratorPage() {
                   }),
                 }}
                 onClick={handleGenerate}
-                disabled={loading || (extractedUnits.length > 0 && selectedUnits.length === 0)}
+                disabled={loading || !syllabusFile || !subject.trim() || detectingSubjects || extractingUnits || (extractedUnits.length > 0 && selectedUnits.length === 0)}
               >
                 {loading ? (
                   <>

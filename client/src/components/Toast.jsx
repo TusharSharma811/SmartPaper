@@ -1,12 +1,22 @@
-import { useState, useEffect, useCallback, createContext, useContext } from 'react'
+import { useState, useEffect, useCallback, createContext, useContext, useRef } from 'react'
 
 // ── Toast Context ─────────────────────────────────────────────
 const ToastContext = createContext(null)
 
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([])
+  const toastsRef = useRef([])
 
-  const addToast = useCallback((message, type = 'error', duration = 5000) => {
+  // Keep ref in sync for dedup checks without causing re-renders
+  toastsRef.current = toasts
+
+  const addToast = useCallback((message, type = 'error', duration = 4500) => {
+    // Deduplicate: if the same message+type is already showing, don't add again
+    const isDuplicate = toastsRef.current.some(
+      t => t.message === message && t.type === type
+    )
+    if (isDuplicate) return
+
     const id = Date.now() + Math.random()
     setToasts(prev => [...prev, { id, message, type, duration }])
   }, [])
@@ -52,15 +62,32 @@ function ToastContainer({ toasts, removeToast }) {
 // ── Single Toast Item ──────────────────────────────────────────
 function ToastItem({ toast, onDismiss }) {
   const [exiting, setExiting] = useState(false)
+  const [progress, setProgress] = useState(100)
+  const duration = toast.duration || 4500
 
+  // Auto-dismiss timer
   useEffect(() => {
     const timer = setTimeout(() => {
       setExiting(true)
-    }, toast.duration || 5000)
+    }, duration)
 
     return () => clearTimeout(timer)
-  }, [toast.duration])
+  }, [duration])
 
+  // Progress bar animation
+  useEffect(() => {
+    const start = Date.now()
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - start
+      const remaining = Math.max(0, 100 - (elapsed / duration) * 100)
+      setProgress(remaining)
+      if (remaining <= 0) clearInterval(interval)
+    }, 50)
+
+    return () => clearInterval(interval)
+  }, [duration])
+
+  // Exit animation then remove
   useEffect(() => {
     if (exiting) {
       const exitTimer = setTimeout(onDismiss, 350)
@@ -73,6 +100,13 @@ function ToastItem({ toast, onDismiss }) {
     success: '✓',
     warning: '⚠',
     info: 'ℹ',
+  }
+
+  const progressColors = {
+    error: '#ef4444',
+    success: '#10b981',
+    warning: '#f59e0b',
+    info: '#6366f1',
   }
 
   return (
@@ -91,6 +125,18 @@ function ToastItem({ toast, onDismiss }) {
       >
         ✕
       </button>
+      {/* Progress bar */}
+      <div style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        height: '2px',
+        width: `${progress}%`,
+        background: progressColors[toast.type] || progressColors.info,
+        borderRadius: '0 0 12px 12px',
+        transition: 'width 50ms linear',
+        opacity: 0.5,
+      }} />
     </div>
   )
 }
