@@ -32,59 +32,6 @@ class GeneratePaperRequest(BaseModel):
 
 
 # ══════════════════════════════════════════════════════════════════
-#  Generate Paper — Response (rich JSON format)
-# ══════════════════════════════════════════════════════════════════
-
-class SubQuestion(BaseModel):
-    label: str
-    text: str
-    marks: int
-    difficulty: Optional[str] = None
-    topic: Optional[str] = None
-    co: Optional[int] = None
-    bloom_level: Optional[str] = None
-
-
-class ChoiceOption(BaseModel):
-    label: str
-    text: str
-    marks: int
-    difficulty: Optional[str] = None
-    topic: Optional[str] = None
-
-
-class QuestionOut(BaseModel):
-    question_id: int
-    type: str  # single | subparts | choice_group
-    marks: int
-    subquestions: Optional[List[SubQuestion]] = None
-    options: Optional[List[ChoiceOption]] = None
-
-
-class SectionOut(BaseModel):
-    section_id: str
-    title: str
-    description: Optional[str] = None
-    marks_scheme: Optional[str] = None
-    attempt_rule: Optional[str] = None
-    questions: List[QuestionOut]
-
-
-class PaperMetadata(BaseModel):
-    exam: Optional[str] = None
-    subject: str
-    subject_code: Optional[str] = None
-    duration: Optional[str] = None
-    max_marks: int
-
-
-class GeneratePaperResponse(BaseModel):
-    metadata: PaperMetadata
-    instructions: List[str]
-    sections: List[SectionOut]
-
-
-# ══════════════════════════════════════════════════════════════════
 #  Add Questions to Vector Store
 # ══════════════════════════════════════════════════════════════════
 
@@ -123,12 +70,3 @@ class SearchResponse(BaseModel):
     query: str
     total: int
     results: List[SearchResult]
-
-
-# ══════════════════════════════════════════════════════════════════
-#  Syllabus Extraction
-# ══════════════════════════════════════════════════════════════════
-
-class SyllabusResponse(BaseModel):
-    subject: str
-    topics: List[str]

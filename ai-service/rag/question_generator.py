@@ -1,27 +1,22 @@
 """
-Question paper generator using LangChain + Google Gemini LLM.
+Question paper generator using Google Gemini LLM.
 
 Generates questions in a rich JSON format with:
   - metadata (exam, subject, subject_code, duration, max_marks)
   - instructions
   - sections → questions with subparts, choice groups, bloom levels, COs
 
-Optionally accepts a syllabus PDF which is sent directly to Gemini
+Accepts a syllabus PDF which is sent directly to Gemini
 for context-aware question generation.
 """
 
-import base64
 import json
 import logging
 from typing import List, Optional, Dict, Any
 
 from google import genai
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.messages import SystemMessage, HumanMessage
-from langchain_core.output_parsers import JsonOutputParser
 
 from config import GOOGLE_API_KEY, LLM_MODEL
-from rag.paraphraser import paraphrase_generated_paper
 from rag.vector_store import search as vector_search
 
 logger = logging.getLogger(__name__)
@@ -290,57 +285,40 @@ async def generate(
         exam, subject_code, duration, instructions,
     )
 
-    # 3. If syllabus PDF is provided, use google.genai SDK directly
-    #    (it supports native PDF input). Otherwise, use LangChain.
-    if syllabus_pdf_bytes:
-        logger.info("Using Gemini SDK with direct PDF input")
-        client = genai.Client(api_key=GOOGLE_API_KEY)
+    # 3. Send PDF + prompt to Gemini SDK (supports native PDF input)
+    logger.info("Using Gemini SDK with direct PDF input")
+    client = genai.Client(api_key=GOOGLE_API_KEY)
 
-        # Build the PDF context message based on whether topics are filtered
-        if topics:
-            pdf_context_msg = (
-                "\n\nThe attached PDF is the full syllabus for this subject. "
-                "IMPORTANT: The user has selected ONLY specific units/topics from this syllabus. "
-                "You MUST ONLY generate questions from these selected topics: "
-                f"{', '.join(topics)}. "
-                "Do NOT generate ANY questions about topics outside this list, "
-                "even if they appear in the PDF. Strictly ignore all other units/topics."
-            )
-        else:
-            pdf_context_msg = (
-                "\n\nThe attached PDF is the syllabus for this subject. "
-                "Use it to ensure questions cover the topics in the syllabus."
-            )
-
-        response = client.models.generate_content(
-            model=LLM_MODEL,
-            contents=[
-                system_text,
-                genai.types.Part.from_bytes(data=syllabus_pdf_bytes, mime_type="application/pdf"),
-                human_text + pdf_context_msg,
-            ],
-            config=genai.types.GenerateContentConfig(temperature=0.7),
+    # Build the PDF context message based on whether topics are filtered
+    if topics:
+        pdf_context_msg = (
+            "\n\nThe attached PDF is the full syllabus for this subject. "
+            "IMPORTANT: The user has selected ONLY specific units/topics from this syllabus. "
+            "You MUST ONLY generate questions from these selected topics: "
+            f"{', '.join(topics)}. "
+            "Do NOT generate ANY questions about topics outside this list, "
+            "even if they appear in the PDF. Strictly ignore all other units/topics."
         )
-
-        result = _parse_json_response(response.text)
     else:
-        logger.info("Using LangChain (no PDF)")
-        llm = ChatGoogleGenerativeAI(
-            model=LLM_MODEL,
-            google_api_key=GOOGLE_API_KEY,
-            temperature=0.7,
+        pdf_context_msg = (
+            "\n\nThe attached PDF is the syllabus for this subject. "
+            "Use it to ensure questions cover the topics in the syllabus."
         )
 
-        messages = [
-            SystemMessage(content=system_text),
-            HumanMessage(content=human_text),
-        ]
+    contents = [system_text]
+    if syllabus_pdf_bytes:
+        contents.append(
+            genai.types.Part.from_bytes(data=syllabus_pdf_bytes, mime_type="application/pdf")
+        )
+    contents.append(human_text + pdf_context_msg)
 
-        parser = JsonOutputParser()
-        response = await llm.ainvoke(messages)
-        result = parser.parse(response.content)
+    response = client.models.generate_content(
+        model=LLM_MODEL,
+        contents=contents,
+        config=genai.types.GenerateContentConfig(temperature=0.7),
+    )
 
-    result = paraphrase_generated_paper(result)
+    result = _parse_json_response(response.text)
 
     logger.info(
         "Paper generated — %d sections, %d total marks",

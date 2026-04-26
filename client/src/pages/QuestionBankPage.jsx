@@ -6,14 +6,8 @@ import { useToast } from '../components/Toast'
 export default function QuestionBankPage() {
   const { api } = useAuth()
   const toast = useToast()
-  const [activeTab, setActiveTab] = useState('search') // 'search' | 'add' | 'bulk'
+  const [activeTab, setActiveTab] = useState('add') // 'add' | 'bulk'
 
-  // Search State
-  const [searchQuery, setSearchQuery] = useState('')
-  const [searchSubject, setSearchSubject] = useState('')
-  const [searchResults, setSearchResults] = useState([])
-  const [isSearching, setIsSearching] = useState(false)
-  const [hasSearched, setHasSearched] = useState(false)
 
   // Add State
   const [addForm, setAddForm] = useState({ text: '', subject: '', marks: 5, difficulty: 'medium', topic: '' })
@@ -27,37 +21,6 @@ export default function QuestionBankPage() {
   const [bulkMarks, setBulkMarks] = useState(5)
   const [isBulkAdding, setIsBulkAdding] = useState(false)
 
-  // ── Search Handler ────────────────────────────────────────────
-  const handleSearch = useCallback(async (e) => {
-    if (e) e.preventDefault()
-    if (!searchQuery.trim()) {
-      toast.warning('Please enter a search query.')
-      return
-    }
-
-    setIsSearching(true)
-    setHasSearched(true)
-
-    try {
-      const params = new URLSearchParams({ query: searchQuery })
-      if (searchSubject) params.append('subject', searchSubject)
-
-      const { data } = await api.get(`/questions/search?${params.toString()}`)
-
-      if (data.success) {
-        setSearchResults(data.results || [])
-        if ((data.results || []).length === 0) {
-          toast.info('No matching questions found. Try a different query.')
-        }
-      } else {
-        throw new Error(data.error || 'Failed to search')
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.error || err.message || 'Search failed. Please try again.')
-    } finally {
-      setIsSearching(false)
-    }
-  }, [searchQuery, searchSubject, api, toast])
 
   // ── Single Add Handler ────────────────────────────────────────
   const handleAddQuestion = useCallback(async (e) => {
@@ -153,7 +116,7 @@ export default function QuestionBankPage() {
             <span className="gradient-text">📚 Question Bank</span>
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', maxWidth: '500px', margin: '0 auto', lineHeight: 1.6 }}>
-            Search existing questions or contribute your own to improve AI-generated paper quality
+            Contribute questions to improve generated paper quality — every question helps the system learn
           </p>
         </div>
 
@@ -191,7 +154,6 @@ export default function QuestionBankPage() {
           boxShadow: 'var(--shadow-sm)',
         }}>
           {[
-            { id: 'search', label: '🔍 Search', color: 'var(--accent)' },
             { id: 'add', label: '✏️ Add Single', color: 'var(--success)' },
             { id: 'bulk', label: '📋 Bulk Add', color: '#8b5cf6' },
           ].map(tab => (
@@ -220,125 +182,6 @@ export default function QuestionBankPage() {
         {/* Main Content Card */}
         <div className="glass-card animate-slide-up" style={{ padding: '32px', minHeight: '400px' }}>
 
-          {/* ── SEARCH TAB ──────────────────────────────────────── */}
-          {activeTab === 'search' && (
-            <div>
-              <div style={{ marginBottom: '24px' }}>
-                <h2 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '4px', color: 'var(--text-primary)' }}>
-                  Search Question Bank
-                </h2>
-                <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-                  Find similar questions using AI-powered semantic search
-                </p>
-              </div>
-
-              <form onSubmit={handleSearch} style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
-                <input
-                  type="text"
-                  className="input-field"
-                  placeholder="e.g. Explain the difference between process and thread"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  style={{ flex: '2 1 250px' }}
-                  disabled={isSearching}
-                />
-                <input
-                  type="text"
-                  className="input-field"
-                  placeholder="Subject (optional)"
-                  value={searchSubject}
-                  onChange={(e) => setSearchSubject(e.target.value)}
-                  style={{ flex: '1 1 150px' }}
-                  disabled={isSearching}
-                />
-                <button type="submit" className="btn-primary" disabled={isSearching} style={{ whiteSpace: 'nowrap', padding: '12px 24px' }}>
-                  {isSearching ? <><div className="spinner"></div> Searching...</> : '🔍 Search'}
-                </button>
-              </form>
-
-              {/* Results */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                {!hasSearched && !isSearching && (
-                  <div style={{ textAlign: 'center', padding: '48px 20px' }}>
-                    <div style={{ fontSize: '3rem', marginBottom: '12px', opacity: 0.4 }}>🔍</div>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-                      Enter a query to search the AI question bank
-                    </p>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '6px' }}>
-                      Uses semantic similarity — try describing what you're looking for
-                    </p>
-                  </div>
-                )}
-
-                {hasSearched && searchResults.length === 0 && !isSearching && (
-                  <div style={{ textAlign: 'center', padding: '48px 20px' }}>
-                    <div style={{ fontSize: '2.5rem', marginBottom: '12px', opacity: 0.4 }}>📭</div>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-                      No matching questions found
-                    </p>
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '6px' }}>
-                      Try different keywords or contribute questions to grow the bank!
-                    </p>
-                  </div>
-                )}
-
-                {hasSearched && searchResults.length > 0 && (
-                  <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>
-                    {searchResults.length} result{searchResults.length !== 1 ? 's' : ''} found
-                  </p>
-                )}
-
-                {searchResults.map((result, idx) => (
-                  <div key={idx} style={{
-                    padding: '18px',
-                    borderRadius: '12px',
-                    backgroundColor: 'var(--bg-input)',
-                    border: '1px solid var(--border)',
-                    transition: 'border-color 0.2s',
-                  }}
-                    onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(99, 102, 241, 0.3)'}
-                    onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border)'}
-                  >
-                    <p style={{ fontSize: '0.95rem', color: 'var(--text-primary)', marginBottom: '10px', lineHeight: 1.6 }}>
-                      {result.text}
-                    </p>
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      {result.subject && (
-                        <span style={badgeStyle('rgba(99, 102, 241, 0.08)', '#6366f1')}>
-                          📘 {result.subject}
-                        </span>
-                      )}
-                      {result.topic && (
-                        <span style={badgeStyle('rgba(139, 92, 246, 0.08)', '#8b5cf6')}>
-                          📑 {result.topic}
-                        </span>
-                      )}
-                      {result.difficulty && (
-                        <span style={badgeStyle(
-                          result.difficulty === 'hard' ? 'rgba(239,68,68,0.08)' :
-                            result.difficulty === 'easy' ? 'rgba(16,185,129,0.08)' : 'rgba(245,158,11,0.08)',
-                          result.difficulty === 'hard' ? '#ef4444' :
-                            result.difficulty === 'easy' ? '#10b981' : '#f59e0b'
-                        )}>
-                          🎯 {result.difficulty}
-                        </span>
-                      )}
-                      {result.marks && (
-                        <span style={badgeStyle('rgba(59, 130, 246, 0.08)', '#3b82f6')}>
-                          ⭐ {result.marks}m
-                        </span>
-                      )}
-                      {result.score != null && (
-                        <span style={{ ...badgeStyle('var(--bg-input)', 'var(--text-muted)'), opacity: 0.6 }}>
-                          Similarity: {(result.score * 100).toFixed(0)}%
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* ── ADD SINGLE TAB ──────────────────────────────────── */}
           {activeTab === 'add' && (
@@ -348,7 +191,7 @@ export default function QuestionBankPage() {
                   ✏️ Contribute a Question
                 </h2>
                 <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
-                  Add a question to the shared bank — it helps AI generate better papers for everyone
+                  Add a question to the shared bank — it helps generate better papers for everyone
                 </p>
               </div>
 
@@ -582,13 +425,13 @@ export default function QuestionBankPage() {
                 },
                 {
                   icon: '🧠',
-                  title: 'AI Learns',
-                  desc: 'Questions are embedded using AI and stored in a vector database for semantic search.',
+                  title: 'System Learns',
+                  desc: 'Questions are embedded and stored in a knowledge base for intelligent search.',
                 },
                 {
                   icon: '📄',
                   title: 'Better Papers',
-                  desc: 'When generating papers, the AI uses similar questions from the bank for style & topic inspiration.',
+                  desc: 'When generating papers, similar questions from the bank are used for style & topic inspiration.',
                 },
               ].map((item, idx) => (
                 <div key={idx} style={{
@@ -609,17 +452,4 @@ export default function QuestionBankPage() {
       </div>
     </div>
   )
-}
-
-// ── Badge style helper ──────────────────────────────────────────
-function badgeStyle(bg, color) {
-  return {
-    display: 'inline-block',
-    padding: '3px 10px',
-    borderRadius: '6px',
-    fontSize: '0.75rem',
-    fontWeight: 600,
-    background: bg,
-    color: color,
-  }
 }

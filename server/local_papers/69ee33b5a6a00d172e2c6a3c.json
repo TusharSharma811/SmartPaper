@@ -1,0 +1,359 @@
+{
+  "name": "",
+  "metadata": {
+    "exam": "Examination",
+    "subject": "Computer Organization and Architecture",
+    "subject_code": "BCS302",
+    "duration": "3 Hours",
+    "max_marks": 70
+  },
+  "instructions": [
+    "Attempt all questions.",
+    "Each question carries equal marks within its section."
+  ],
+  "sections": [
+    {
+      "section_id": "Section A",
+      "title": "Short Answer Questions",
+      "description": "Answer the following questions briefly",
+      "marks_scheme": "2 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 1,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "1",
+              "text": "Define bus arbitration and list its types.",
+              "marks": 2,
+              "difficulty": "easy",
+              "topic": "bus architecture",
+              "co": 1,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 2,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "2",
+              "text": "List any four addressing modes used in processor organization.",
+              "marks": 2,
+              "difficulty": "easy",
+              "topic": "addressing modes",
+              "co": 1,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 3,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "3",
+              "text": "State the advantage of a Look-ahead carry adder over a ripple carry adder.",
+              "marks": 2,
+              "difficulty": "easy",
+              "topic": "Look ahead carries adders",
+              "co": 2,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 4,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "4",
+              "text": "Define the term 'Micro-operation' in the context of a control unit.",
+              "marks": 2,
+              "difficulty": "easy",
+              "topic": "micro operations",
+              "co": 3,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 5,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "5",
+              "text": "What is the primary objective of Pipelining in computer architecture?",
+              "marks": 2,
+              "difficulty": "easy",
+              "topic": "Pipelining",
+              "co": 3,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 6,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "6",
+              "text": "Differentiate between Static RAM and Dynamic RAM.",
+              "marks": 2,
+              "difficulty": "medium",
+              "topic": "semiconductor RAM memories",
+              "co": 4,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 7,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "7",
+              "text": "Define 'Hit Ratio' in cache memory performance.",
+              "marks": 2,
+              "difficulty": "easy",
+              "topic": "Cache memories",
+              "co": 4,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 8,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "8",
+              "text": "Explain the concept of Virtual Memory in brief.",
+              "marks": 2,
+              "difficulty": "medium",
+              "topic": "Virtual memory",
+              "co": 4,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 9,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "9",
+              "text": "Define Direct Memory Access (DMA).",
+              "marks": 2,
+              "difficulty": "easy",
+              "topic": "Direct Memory Access",
+              "co": 5,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 10,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "10",
+              "text": "What is the difference between Synchronous and Asynchronous serial communication?",
+              "marks": 2,
+              "difficulty": "medium",
+              "topic": "Serial Communication",
+              "co": 5,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "section_id": "Section B",
+      "title": "Medium Answer Questions",
+      "description": "Answer the following questions in detail",
+      "marks_scheme": "6 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 11,
+          "type": "single",
+          "marks": 6,
+          "subquestions": [
+            {
+              "label": "11",
+              "text": "Explain the functional units of a digital system and describe their interconnections with a block diagram.",
+              "marks": 6,
+              "difficulty": "medium",
+              "topic": "Functional units of digital system",
+              "co": 1,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 12,
+          "type": "single",
+          "marks": 6,
+          "subquestions": [
+            {
+              "label": "12",
+              "text": "Describe Booth's algorithm for signed operand multiplication with the help of a flow chart.",
+              "marks": 6,
+              "difficulty": "medium",
+              "topic": "Booths algorithm",
+              "co": 2,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 13,
+          "type": "single",
+          "marks": 6,
+          "subquestions": [
+            {
+              "label": "13",
+              "text": "Explain the sequence of operations involved in a complete instruction cycle, including fetch and execute sub-cycles.",
+              "marks": 6,
+              "difficulty": "medium",
+              "topic": "instruction cycles",
+              "co": 3,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 14,
+          "type": "single",
+          "marks": 6,
+          "subquestions": [
+            {
+              "label": "14",
+              "text": "Compare 2D and 2 1/2D memory organization techniques in semiconductor RAM.",
+              "marks": 6,
+              "difficulty": "hard",
+              "topic": "2D & 2 1/2D memory organization",
+              "co": 4,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 15,
+          "type": "single",
+          "marks": 6,
+          "subquestions": [
+            {
+              "label": "15",
+              "text": "Explain the Programmed I/O and Interrupt-initiated I/O modes of data transfer.",
+              "marks": 6,
+              "difficulty": "medium",
+              "topic": "Modes of Data Transfer",
+              "co": 5,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "section_id": "Section C",
+      "title": "Long Answer Questions",
+      "description": "Answer the following questions with detailed analysis",
+      "marks_scheme": "10 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 16,
+          "type": "single",
+          "marks": 10,
+          "subquestions": [
+            {
+              "label": "16",
+              "text": "Discuss the various address mapping techniques used in Cache memory: Direct mapping, Associative mapping, and Set-Associative mapping. Compare them based on performance and complexity.",
+              "marks": 10,
+              "difficulty": "hard",
+              "topic": "address mapping and replacement",
+              "co": 4,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 17,
+          "type": "single",
+          "marks": 10,
+          "subquestions": [
+            {
+              "label": "17",
+              "text": "Compare Hardwired control and Micro-programmed control units. Explain the concepts of horizontal and vertical microprogramming in detail.",
+              "marks": 10,
+              "difficulty": "hard",
+              "topic": "Hardwire and micro programmed control",
+              "co": 3,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        }
+      ]
+    }
+  ],
+  "pattern": [
+    {
+      "section": "A",
+      "questions": 10,
+      "marksEach": 2,
+      "questionType": "single"
+    },
+    {
+      "section": "B",
+      "questions": 5,
+      "marksEach": 6,
+      "questionType": "single"
+    },
+    {
+      "section": "C",
+      "questions": 2,
+      "marksEach": 10,
+      "questionType": "single"
+    }
+  ],
+  "difficulty": "Moderate (50%)",
+  "createdBy": "69e3b544010eeba35c84cc5c",
+  "pdfUrl": "C:\\Users\\sharm\\OneDrive\\Desktop\\Projects\\MajorProject\\AI_QuestionPaper\\server\\pdfs\\69ee33b5a6a00d172e2c6a3c.pdf",
+  "_id": "69ee33b5a6a00d172e2c6a3c",
+  "createdAt": "2026-04-26T15:48:05.713Z",
+  "updatedAt": "2026-04-26T15:48:08.579Z",
+  "__v": 0
+}

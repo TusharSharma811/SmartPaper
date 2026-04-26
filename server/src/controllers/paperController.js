@@ -1,10 +1,81 @@
 import QuestionPaper from "../models/QuestionPaper.js";
-import { generateQuestions, validateAnalysis, detectSubjects, extractUnits, analyzePaperPDF } from "../services/aiService.js";
+import Question from "../models/Question.js";
+import { generateQuestions, addQuestions as pushToVectorStore, validateAnalysis, detectSubjects, extractUnits, analyzePaperPDF } from "../services/aiService.js";
 import { generatePDF, getPDFPath } from "../services/pdfService.js";
 import { aggregateBlooms, aggregateCOs } from "../utils/analysisUtils.js";
 import logger from "../utils/logger.js";
 import fs from "fs";
 import path from "path";
+
+// ── Async question harvester ─────────────────────────────────────
+// Extracts individual questions from a generated paper and saves
+// them to both MongoDB (Question collection) and ChromaDB (vector
+// store) so they feed future RAG-based generation.
+// Runs fire-and-forget — errors are logged but never block the user.
+
+const saveGeneratedQuestionsAsync = (paper) => {
+  // Wrap in an immediately-invoked async function so we don't
+  // hold up the HTTP response.
+  (async () => {
+    try {
+      const subject = paper.metadata?.subject || "Unknown";
+      const sections = paper.sections || [];
+      const questionsToSave = [];
+
+      for (const section of sections) {
+        for (const q of section.questions || []) {
+          for (const sq of q.subquestions || []) {
+            questionsToSave.push({
+              text: sq.text,
+              subject,
+              marks: sq.marks || q.marks || null,
+              difficulty: sq.difficulty || paper.difficulty || "medium",
+              topic: sq.topic || null,
+              bloom_level: sq.bloom_level || null,
+              co: sq.co || null,
+            });
+          }
+          // Also harvest choice-group options
+          for (const opt of q.options || []) {
+            questionsToSave.push({
+              text: opt.text,
+              subject,
+              marks: opt.marks || q.marks || null,
+              difficulty: opt.difficulty || paper.difficulty || "medium",
+              topic: opt.topic || null,
+              bloom_level: null,
+              co: null,
+            });
+          }
+        }
+      }
+
+      if (questionsToSave.length === 0) return;
+
+      // 1. Save to MongoDB
+      const inserted = await Question.insertMany(questionsToSave, { ordered: false });
+      logger.info(`[QuestionHarvester] Saved ${inserted.length} questions to MongoDB from paper ${paper._id}`);
+
+      // 2. Push to ChromaDB vector store (best-effort)
+      try {
+        await pushToVectorStore(
+          questionsToSave.map((q) => ({
+            text: q.text,
+            subject: q.subject,
+            marks: q.marks,
+            difficulty: q.difficulty,
+            topic: q.topic,
+          }))
+        );
+        logger.info(`[QuestionHarvester] Pushed ${questionsToSave.length} questions to ChromaDB`);
+      } catch (vecErr) {
+        logger.warn(`[QuestionHarvester] ChromaDB push failed (questions still in MongoDB): ${vecErr.message}`);
+      }
+    } catch (err) {
+      logger.error(`[QuestionHarvester] Failed to save generated questions: ${err.message}`);
+    }
+  })();
+};
 
 // ── Paper Controller ─────────────────────────────────────────────
 
@@ -125,6 +196,9 @@ const generatePaper = async (req, res, next) => {
     }
 
     logger.info(`Paper saved: ${paper._id}`);
+
+    // ── Step 4.5: Async harvest questions into Question bank ────
+    saveGeneratedQuestionsAsync(paper);
 
     // ── Step 4.5: Save locally to JSON ───────────────────────────
     try {

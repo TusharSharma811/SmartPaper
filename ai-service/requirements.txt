@@ -2,13 +2,9 @@ fastapi
 uvicorn[standard]
 python-dotenv
 python-multipart
-langchain
 langchain-google-genai
 langchain-community
 langchain-chroma
 chromadb
 pypdf
 google-genai
-transformers
-torch
-sentencepiece

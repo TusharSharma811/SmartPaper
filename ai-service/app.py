@@ -5,7 +5,7 @@ FastAPI entry point for the AI Question Paper Generator service.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import generate, syllabus, questions, validate, units, analyze_pdf
+from routers import generate, questions, validate, units, analyze_pdf
 
 app = FastAPI(
     title="AI Question Paper Generator",
@@ -24,7 +24,7 @@ app.add_middleware(
 
 # ── Routers ───────────────────────────────────────────────────────
 app.include_router(generate.router)
-app.include_router(syllabus.router)
+
 app.include_router(questions.router)
 app.include_router(validate.router)
 app.include_router(units.router)

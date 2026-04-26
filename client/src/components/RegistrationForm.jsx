@@ -337,7 +337,7 @@ export default function RegistrationForm() {
         marginTop: '20px',
         opacity: 0.7,
       }}>
-        AI-Powered Question Paper Generator
+        Smart Question Paper Generator
       </p>
     </div>
   )

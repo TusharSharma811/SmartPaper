@@ -598,7 +598,7 @@ export default function GeneratorPage() {
                         Drag & drop a PDF here, or click to browse
                       </p>
                       <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                        The syllabus PDF will be sent directly to the AI for context
+                        The syllabus PDF is used as context for generating questions
                       </p>
                     </div>
                   )}
@@ -613,7 +613,7 @@ export default function GeneratorPage() {
                       <div className="spinner" style={{ width: '18px', height: '18px', borderWidth: '2px', borderColor: 'var(--accent)', borderTopColor: 'transparent' }}></div>
                       <div>
                         <p style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.9rem' }}>Detecting subjects from syllabus...</p>
-                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>AI is identifying all subjects present in the PDF</p>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>Identifying all subjects present in the PDF</p>
                       </div>
                     </div>
                   ) : detectedSubjects.length > 1 && !subject ? (
@@ -628,7 +628,7 @@ export default function GeneratorPage() {
                       <div className="spinner" style={{ width: '18px', height: '18px', borderWidth: '2px', borderColor: 'var(--accent)', borderTopColor: 'transparent' }}></div>
                       <div>
                         <p style={{ fontWeight: 600, color: 'var(--text-primary)', fontSize: '0.9rem' }}>Extracting units for {subject || 'selected subject'}...</p>
-                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>AI is analyzing the selected subject section of the PDF</p>
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>Analyzing the selected subject section of the PDF</p>
                       </div>
                     </div>
                   ) : extractError ? (
@@ -1015,7 +1015,7 @@ export default function GeneratorPage() {
                   color: 'var(--text-muted)',
                   marginTop: '12px',
                 }}>
-                  This may take up to 3 minutes depending on AI model and syllabus size...
+                  This may take up to 3 minutes depending on complexity and syllabus size...
                 </p>
               )}
             </div>

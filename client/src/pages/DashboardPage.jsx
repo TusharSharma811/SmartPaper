@@ -169,7 +169,7 @@ export default function DashboardPage() {
               No papers generated yet
             </h3>
             <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
-              Create your first AI-generated question paper now
+              Create your first question paper now
             </p>
             <button 
               className="btn-primary" 
