@@ -1,0 +1,417 @@
+{
+  "name": "",
+  "metadata": {
+    "exam": "Examination",
+    "subject": "MATHEMATICS-IV",
+    "subject_code": "KAS302/KAS402",
+    "duration": "3 Hours",
+    "max_marks": 70
+  },
+  "instructions": [
+    "Attempt all questions.",
+    "Each question carries marks as indicated in the respective sections.",
+    "The use of scientific calculators is permitted."
+  ],
+  "sections": [
+    {
+      "section_id": "A",
+      "title": "Section A",
+      "description": "Short Answer Questions",
+      "header_notes": "Attempt all questions",
+      "marks_scheme": "2 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 1,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "1",
+              "text": "Define Lagrange's linear partial differential equation and write its standard form.",
+              "marks": 2,
+              "difficulty": "medium",
+              "topic": "Lagrange’s Equations",
+              "co": 1,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 2,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "2",
+              "text": "Classify the second-order partial differential equation: ∂²u/∂x² + 4∂²u/∂x∂y + 4∂²u/∂y² = 0.",
+              "marks": 2,
+              "difficulty": "medium",
+              "topic": "Classification of linear partial differential equation of second order",
+              "co": 2,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 3,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "3",
+              "text": "Define the Moment Generating Function (MGF) of a random variable.",
+              "marks": 2,
+              "difficulty": "medium",
+              "topic": "Moment generating function (MGF)",
+              "co": 3,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 4,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "4",
+              "text": "List any two properties of regression coefficients.",
+              "marks": 2,
+              "difficulty": "medium",
+              "topic": "Properties of regressions coefficients",
+              "co": 3,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 5,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "5",
+              "text": "State the addition law of probability for two non-mutually exclusive events.",
+              "marks": 2,
+              "difficulty": "medium",
+              "topic": "Addition and multiplication law of probability",
+              "co": 4,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 6,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "6",
+              "text": "Distinguish between Null Hypothesis and Alternative Hypothesis.",
+              "marks": 2,
+              "difficulty": "medium",
+              "topic": "Hypothesis, Null hypothesis, Alternative hypothesis",
+              "co": 5,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 7,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "7",
+              "text": "Define the term 'Level of Significance' as used in hypothesis testing.",
+              "marks": 2,
+              "difficulty": "medium",
+              "topic": "Level of significance",
+              "co": 5,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "section_id": "B",
+      "title": "Section B",
+      "description": "Long Answer Questions",
+      "header_notes": "Attempt all questions",
+      "marks_scheme": "7 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 8,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "1",
+              "text": "Explain Charpit’s method for finding the complete integral of a non-linear partial differential equation of first order.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Charpit’s method",
+              "co": 1,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 9,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "2",
+              "text": "Describe the method of separation of variables for solving a second-order partial differential equation.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Method of separation of variables",
+              "co": 2,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 10,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "3",
+              "text": "Explain the principle of least squares and its application in fitting a straight line to a given set of data points.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Method of least squares, Fitting of straight lines",
+              "co": 3,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 11,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "4",
+              "text": "State and explain Bayes’ theorem for the probability of causes with a suitable mathematical expression.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Baye’s theorem",
+              "co": 4,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 12,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "5",
+              "text": "Discuss the procedure for testing a hypothesis concerning the difference between two means for small samples using the T-test.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Test of significance of difference of means, T-test",
+              "co": 5,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "section_id": "C",
+      "title": "Section C",
+      "description": "Detailed Answer Questions",
+      "header_notes": "Attempt all questions. For each question, choose either part (a) or part (b).",
+      "marks_scheme": "7 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 13,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Compare linear and non-linear partial differential equations of the first order and explain the origin of PDEs.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Origin of Partial Differential Equations, Linear and Non Linear Partial Equations of first order",
+              "co": 1,
+              "bloom_level": "K2"
+            },
+            {
+              "label": "b",
+              "text": "Explain the Cauchy’s method of characteristics for solving first-order partial differential equations.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Cauchy’s method of Characteristics",
+              "co": 1,
+              "bloom_level": "K2"
+            }
+          ]
+        },
+        {
+          "question_id": 14,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Discuss the general solution of the one-dimensional wave equation using the method of separation of variables.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Solution of wave and heat conduction equation up to two dimension",
+              "co": 2,
+              "bloom_level": "K2"
+            },
+            {
+              "label": "b",
+              "text": "Explain the Laplace equation in two dimensions and its application in steady-state heat flow.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Laplace equation in two dimensions",
+              "co": 2,
+              "bloom_level": "K2"
+            }
+          ]
+        },
+        {
+          "question_id": 15,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Define Skewness and Kurtosis. Explain how they describe the shape of a frequency distribution.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Skewness, Kurtosis",
+              "co": 3,
+              "bloom_level": "K2"
+            },
+            {
+              "label": "b",
+              "text": "Explain the concept of regression analysis and why there are two lines of regression.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Regression Analysis: Regression lines of y on x and x on y",
+              "co": 3,
+              "bloom_level": "K2"
+            }
+          ]
+        },
+        {
+          "question_id": 16,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Describe the Normal distribution and list its key properties and its probability density function.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Normal distributions",
+              "co": 4,
+              "bloom_level": "K2"
+            },
+            {
+              "label": "b",
+              "text": "Explain the Poisson distribution as a limiting case of the Binomial distribution and state its mean and variance.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Poission and Normal distributions",
+              "co": 4,
+              "bloom_level": "K2"
+            }
+          ]
+        },
+        {
+          "question_id": 17,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Explain the concept of Statistical Quality Control (SQC) and the role of control charts in monitoring processes.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Statistical Quality Control (SQC), Control Charts",
+              "co": 5,
+              "bloom_level": "K2"
+            },
+            {
+              "label": "b",
+              "text": "Describe the construction and interpretation of X-bar and R charts for variables.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Control Charts for variables (X and R Charts)",
+              "co": 5,
+              "bloom_level": "K2"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "pattern": [
+    {
+      "section": "A",
+      "questions": 7,
+      "marksEach": 2,
+      "questionType": "single",
+      "attemptRule": "",
+      "difficulty": "",
+      "description": ""
+    },
+    {
+      "section": "B",
+      "questions": 5,
+      "marksEach": 7,
+      "questionType": "single",
+      "attemptRule": "",
+      "difficulty": "",
+      "description": ""
+    },
+    {
+      "section": "C",
+      "questions": 5,
+      "marksEach": 7,
+      "questionType": "choice_group",
+      "attemptRule": "",
+      "difficulty": "",
+      "description": ""
+    }
+  ],
+  "difficulty": "Moderate (50%)",
+  "createdBy": "69f9eb1cb2efc5c197237d96",
+  "pdfUrl": "C:\\Users\\sharm\\OneDrive\\Desktop\\Projects\\MajorProject\\AI_QuestionPaper\\server\\pdfs\\69faf875d86994c02e8a0129.pdf",
+  "_id": "69faf875d86994c02e8a0129",
+  "createdAt": "2026-05-06T08:14:45.265Z",
+  "updatedAt": "2026-05-06T08:14:47.584Z",
+  "__v": 0
+}

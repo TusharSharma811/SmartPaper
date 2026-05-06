@@ -1,0 +1,418 @@
+{
+  "name": "",
+  "metadata": {
+    "exam": "End Semester Examination",
+    "subject": "Engineering Mathematics-II",
+    "subject_code": "BAS203",
+    "duration": "3 Hours",
+    "max_marks": 70
+  },
+  "instructions": [
+    "Attempt all questions.",
+    "The figures in the right-hand margin indicate marks.",
+    "Use of scientific calculator is permitted.",
+    "Assume any missing data suitably."
+  ],
+  "sections": [
+    {
+      "section_id": "A",
+      "title": "Section A",
+      "description": "Short Answer Questions",
+      "header_notes": "Attempt all questions in this section.",
+      "marks_scheme": "2 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 1,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "1",
+              "text": "A mechanical system is modeled by the differential equation y'' + 4y = f(x). If f(x) = sec(2x), analyze why the Method of Undetermined Coefficients cannot be applied to find the particular integral and suggest an alternative approach.",
+              "marks": 2,
+              "difficulty": "hard",
+              "topic": "Method of variation of parameters",
+              "co": 1,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 2,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "2",
+              "text": "In a control system circuit, the input voltage is represented by a unit step function u(t-3). Determine the Laplace transform of the rate of change of current, given that the initial current in the circuit is zero.",
+              "marks": 2,
+              "difficulty": "hard",
+              "topic": "Laplace transform of derivates and integrals",
+              "co": 2,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 3,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "3",
+              "text": "For the power series sum of [(n!)^2 / (2n)!] * x^n, evaluate the specific boundary values of 'x' where the D’Alembert’s Ratio Test fails to provide a conclusion regarding convergence.",
+              "marks": 2,
+              "difficulty": "hard",
+              "topic": "Ratio test",
+              "co": 3,
+              "bloom_level": "K5"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 4,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "4",
+              "text": "A two-dimensional fluid flow is described by a velocity potential u(x,y). If the stream function is v(x,y) = e^x sin(y), construct the corresponding velocity potential such that the flow remains irrotational.",
+              "marks": 2,
+              "difficulty": "hard",
+              "topic": "Harmonic function",
+              "co": 4,
+              "bloom_level": "K6"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 5,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "5",
+              "text": "Examine the singularity of the complex function f(z) = (1 - cos z) / z^2 at the origin. Determine if this singularity can be removed and justify your reasoning based on the limit behavior.",
+              "marks": 2,
+              "difficulty": "hard",
+              "topic": "singularities and its classification",
+              "co": 5,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 6,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "6",
+              "text": "Consider the variable coefficient equation x^2 y'' - xy' + y = ln(x). Formulate the substitution required to transform this into a linear differential equation with constant coefficients and state the resulting characteristic equation.",
+              "marks": 2,
+              "difficulty": "hard",
+              "topic": "Cauchy-Euler equation",
+              "co": 1,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 7,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "7",
+              "text": "A signal f(t) has a Laplace transform F(s). If the signal is time-compressed such that we observe f(2t), demonstrate using the change of scale property how the frequency spectrum is shifted in the s-domain.",
+              "marks": 2,
+              "difficulty": "hard",
+              "topic": "Properties of Laplace Transform",
+              "co": 2,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "section_id": "B",
+      "title": "Section B",
+      "description": "Analytical Problem Solving",
+      "header_notes": "Solve all questions. Show detailed steps for full credit.",
+      "marks_scheme": "7 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 8,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "8",
+              "text": "A periodic voltage signal is defined by f(x) = x^2 in the interval (-pi, pi). By determining the Fourier coefficients, apply Parseval’s Identity to find the exact sum of the infinite series 1/1^4 + 1/2^4 + 1/3^4 + ...",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Fourier series",
+              "co": 3,
+              "bloom_level": "K5"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 9,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "9",
+              "text": "Determine the values of constants 'a' and 'b' such that the function u = ax^3 + bxy^2 is harmonic. Once determined, find its harmonic conjugate 'v' and express the complete analytic function f(z) in terms of the complex variable 'z'.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Method to find Analytic functions",
+              "co": 4,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 10,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "10",
+              "text": "Evaluate the complex line integral of f(z) = exp(2z) / (z + 1)^4 along the closed contour C defined by the circle |z| = 2. Utilize the Cauchy Integral Formula for higher-order derivatives to obtain the result.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Cauchy integral formula",
+              "co": 5,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 11,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "11",
+              "text": "Two coupled mechanical oscillators are governed by the simultaneous equations: dx/dt + 2x - 3y = t and dy/dt - 3x + 2y = exp(2t). Solve this system for x(t) and y(t) assuming the system starts from rest at the origin.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Simultaneous linear differential equations",
+              "co": 1,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 12,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "12",
+              "text": "The transfer function of a signal processing unit is H(s) = s / (s^2 + a^2)^2. Employ the Convolution Theorem to find the inverse Laplace transform, effectively determining the unit impulse response of the system in the time domain.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Convolution theorem",
+              "co": 2,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "section_id": "C",
+      "title": "Section C",
+      "description": "Detailed Choice Questions",
+      "header_notes": "Attempt any ONE part from each question.",
+      "marks_scheme": "7 marks each",
+      "attempt_rule": "Attempt any one part from each question",
+      "questions": [
+        {
+          "question_id": 13,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Investigate the convergence of the infinite series whose n-th term is given by u_n = [sqrt(n+1) - sqrt(n)] / n^p. Determine the range of values for 'p' for which the series is absolutely convergent.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Comparison test",
+              "co": 3,
+              "bloom_level": "K4"
+            },
+            {
+              "label": "b",
+              "text": "A heat conducting rod of length L=1 is initially at a temperature profile f(x) = exp(x). To analyze the cooling process, expand this function into a half-range Fourier sine series valid for the interval (0, 1).",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Half range Fourier sine and cosine series",
+              "co": 3,
+              "bloom_level": "K3"
+            }
+          ]
+        },
+        {
+          "question_id": 14,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Find the unique Mobius transformation that maps the points z1=0, z2=1, z3=infinity in the z-plane onto the points w1=-1, w2=-i, w3=1 in the w-plane. Verify the transformation for an arbitrary point.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Mobius transformation and their properties",
+              "co": 4,
+              "bloom_level": "K3"
+            },
+            {
+              "label": "b",
+              "text": "Analyze the conformal mapping defined by w = z + 1/z. Identify the critical points where the mapping ceases to be conformal and describe the image of the unit circle |z|=1 under this transformation.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Conformal mapping",
+              "co": 4,
+              "bloom_level": "K4"
+            }
+          ]
+        },
+        {
+          "question_id": 15,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Develop the Laurent series expansion for the function f(z) = 1 / [(z-1)(z-2)] that is valid specifically in the annular region defined by 1 < |z| < 2.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Taylor’s and Laurent’s series",
+              "co": 5,
+              "bloom_level": "K3"
+            },
+            {
+              "label": "b",
+              "text": "Evaluate the real trigonometric integral from 0 to 2*pi of [1 / (5 + 4 cos theta)] d(theta) by converting it into a contour integral around the unit circle and applying the Residue Theorem.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Cauchy’s Residue theorem and its application",
+              "co": 5,
+              "bloom_level": "K5"
+            }
+          ]
+        },
+        {
+          "question_id": 16,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Solve the non-homogeneous differential equation y'' - 2y' + y = exp(x) * ln(x) using the Method of Variation of Parameters, ensuring the determination of both the complementary function and the particular integral.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Method of variation of parameters",
+              "co": 1,
+              "bloom_level": "K3"
+            },
+            {
+              "label": "b",
+              "text": "A structural beam deflection is modeled by (1+x)^2 y'' + (1+x) y' + y = 4 cos(ln(1+x)). Solve this second-order linear differential equation with variable coefficients for the general solution.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Second order linear differential equations with variable coefficients",
+              "co": 1,
+              "bloom_level": "K3"
+            }
+          ]
+        },
+        {
+          "question_id": 17,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Derive the Laplace transform of a periodic square wave function f(t) having a period of 2T, where f(t) = k for 0 < t < T and f(t) = -k for T < t < 2T.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Laplace transform of periodic function",
+              "co": 2,
+              "bloom_level": "K3"
+            },
+            {
+              "label": "b",
+              "text": "Use the Laplace transform method to solve the initial value problem y'' + 9y = cos(2t), given the initial conditions y(0) = 1 and y'(0) = 0. Explain the physical significance of the resulting terms.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Application of Laplace Transform to solve ordinary differential equations and simultaneous differential equations",
+              "co": 2,
+              "bloom_level": "K3"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "pattern": [
+    {
+      "section": "A",
+      "questions": 7,
+      "marksEach": 2,
+      "questionType": "single",
+      "attemptRule": "",
+      "difficulty": "",
+      "description": ""
+    },
+    {
+      "section": "B",
+      "questions": 5,
+      "marksEach": 7,
+      "questionType": "single",
+      "attemptRule": "",
+      "difficulty": "",
+      "description": ""
+    },
+    {
+      "section": "C",
+      "questions": 5,
+      "marksEach": 7,
+      "questionType": "choice_group",
+      "attemptRule": "",
+      "difficulty": "",
+      "description": ""
+    }
+  ],
+  "difficulty": "Hard (81%)",
+  "createdBy": "69f9eb1cb2efc5c197237d96",
+  "pdfUrl": "C:\\Users\\sharm\\OneDrive\\Desktop\\Projects\\MajorProject\\AI_QuestionPaper\\server\\pdfs\\69fafbf488254ceb950543d7.pdf",
+  "_id": "69fafbf488254ceb950543d7",
+  "createdAt": "2026-05-06T08:29:41.027Z",
+  "updatedAt": "2026-05-06T08:29:43.167Z",
+  "__v": 0
+}

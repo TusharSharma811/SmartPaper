@@ -26,6 +26,24 @@ from rag.vector_store import search as vector_search
 
 logger = logging.getLogger(__name__)
 
+# ── Math / Numerical Subject Detection ──────────────────────────
+
+_MATH_KEYWORDS = [
+    "math", "mathematics", "calculus", "algebra", "linear algebra",
+    "differential equations", "trigonometry", "statistics",
+    "probability", "discrete mathematics", "numerical methods",
+    "numerical analysis", "complex analysis", "real analysis",
+    "engineering mathematics", "applied mathematics",
+    "vector calculus", "integral calculus", "differential calculus",
+    "transform", "laplace", "fourier", "optimization",
+]
+
+
+def _is_math_subject(subject: str) -> bool:
+    """Return True if the subject is a math / numerical-oriented subject."""
+    normalised = subject.lower().strip()
+    return any(kw in normalised for kw in _MATH_KEYWORDS)
+
 MAX_CO_RETRIES = 2  # max additional attempts if CO balance fails
 
 
@@ -305,7 +323,30 @@ def _build_prompt_text(
         "This is custom text the user wants displayed below the section title.\n"
     )
 
-    system_text += "15. Return ONLY valid JSON — no markdown, no code fences, no explanation."
+    system_text += "15. Return ONLY valid JSON — no markdown, no code fences, no explanation.\n"
+
+    # ── Math / Numerical-only constraint ────────────────────────
+    if _is_math_subject(subject):
+        system_text += (
+            "\n16. CRITICAL — MATHEMATICS / NUMERICAL-ONLY RULE:\n"
+            "This is a Mathematics paper. You MUST generate ONLY numerical, problem-solving, "
+            "and computation-based questions. Every question MUST require the student to "
+            "perform calculations, solve equations, prove results mathematically, or apply "
+            "formulas to obtain a numerical answer.\n"
+            "STRICTLY PROHIBITED question types:\n"
+            "  - 'Define …', 'What is …', 'Explain …', 'List …', 'Describe …', "
+            "'Differentiate between …', 'State the importance of …', 'Discuss …'\n"
+            "  - Any purely theoretical / descriptive / recall-based questions\n"
+            "  - Any questions that can be answered with only words and no calculations\n"
+            "ALLOWED question types (examples):\n"
+            "  - 'Solve …', 'Find …', 'Evaluate …', 'Integrate …', 'Differentiate …', "
+            "'Prove that …', 'Compute …', 'Calculate …', 'Show that …', 'Determine …'\n"
+            "  - Word problems that require setting up and solving equations\n"
+            "  - Proof-based questions requiring mathematical derivation\n"
+            "  - Graph-sketching questions that require computation of critical points\n"
+            "Every single question in the paper MUST be a numerical / computational problem. "
+            "NO EXCEPTIONS.\n"
+        )
 
     # Build section description
     section_desc_lines: List[str] = []
@@ -351,11 +392,20 @@ def _build_prompt_text(
     # Build RAG context
     rag_text = ""
     if rag_context.strip():
-        rag_text = (
-            "\nHere are some reference questions from the question bank for style and topic guidance. "
-            "Use these as INSPIRATION only — do NOT copy them verbatim:\n"
-            f"{rag_context}\n"
-        )
+        if _is_math_subject(subject):
+            rag_text = (
+                "\nHere are some reference NUMERICAL questions from the question bank. "
+                "Use these as INSPIRATION only — do NOT copy them verbatim. "
+                "Only use questions that are computational / numerical in nature. "
+                "Ignore any theory-based reference questions:\n"
+                f"{rag_context}\n"
+            )
+        else:
+            rag_text = (
+                "\nHere are some reference questions from the question bank for style and topic guidance. "
+                "Use these as INSPIRATION only — do NOT copy them verbatim:\n"
+                f"{rag_context}\n"
+            )
 
     # Build instructions text
     instructions_text = ""
@@ -425,11 +475,18 @@ def _get_rag_context(subject: str, topics: Optional[List[str]], top_k: int = 10)
 
     Uses LFU-aware search so that frequently/recently used questions
     are penalised and new or stale questions surface instead.
+
+    For math subjects, the query is biased with numerical keywords
+    so that problem/computation-style questions are retrieved.
     """
     try:
         query = subject
         if topics:
             query += " " + " ".join(topics[:5])
+
+        # Bias RAG retrieval towards numerical questions for math subjects
+        if _is_math_subject(subject):
+            query += " numerical solve compute calculate find evaluate prove"
 
         results = vector_search(query=query, top_k=top_k, subject=subject, apply_lfu=True)
         if not results:
