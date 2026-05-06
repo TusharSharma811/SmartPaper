@@ -49,9 +49,9 @@ const normalizeDetectedSubjects = (payload) => {
 }
 
 const DEFAULT_PATTERN = [
-  { section: 'A', questions: 7, marksEach: 2, questionType: 'single', difficulty: '', description: '' },
-  { section: 'B', questions: 5, marksEach: 7, questionType: 'single', difficulty: '', description: '' },
-  { section: 'C', questions: 5, marksEach: 7, questionType: 'choice_group', difficulty: '', description: '' },
+  { section: 'A', questions: 7, marksEach: 2, questionType: 'single', difficulty: '', description: '', attemptRule: '' },
+  { section: 'B', questions: 5, marksEach: 7, questionType: 'single', difficulty: '', description: '', attemptRule: '' },
+  { section: 'C', questions: 5, marksEach: 7, questionType: 'choice_group', difficulty: '', description: '', attemptRule: '' },
 ]
 
 export default function GeneratorPage() {
@@ -136,7 +136,7 @@ export default function GeneratorPage() {
       return
     }
     const nextLabel = String.fromCharCode(65 + pattern.length)
-    setPattern([...pattern, { section: nextLabel, questions: 5, marksEach: 5, questionType: 'single', difficulty: '', description: '' }])
+    setPattern([...pattern, { section: nextLabel, questions: 5, marksEach: 5, questionType: 'single', difficulty: '', description: '', attemptRule: '' }])
   }
 
   const removeSection = (indexToRemove) => {
@@ -365,7 +365,7 @@ export default function GeneratorPage() {
         formData.append('syllabus_pdf', syllabusFile)
       }
 
-      // Pass selected unit topics to the AI
+      // Pass selected unit topics with unit numbers to the AI (for CO = Unit mapping)
       if (extractedUnits.length > 0 && selectedUnits.length > 0) {
         const selectedTopics = extractedUnits
           .filter(u => selectedUnits.includes(u.unit_number))
@@ -373,6 +373,11 @@ export default function GeneratorPage() {
         if (selectedTopics.length > 0) {
           formData.append('topics', JSON.stringify(selectedTopics))
         }
+        // Send unit-topic mapping so AI can assign CO = unit_number
+        const unitTopicMap = extractedUnits
+          .filter(u => selectedUnits.includes(u.unit_number))
+          .map(u => ({ unit_number: u.unit_number, title: u.title, topics: u.topics }))
+        formData.append('unit_topic_map', JSON.stringify(unitTopicMap))
       }
 
       const { data } = await api.post('/papers/generate', formData, {
@@ -1061,6 +1066,22 @@ export default function GeneratorPage() {
                             />
                             Include Internal Choice (OR)
                           </label>
+
+                          {/* Attempt Rule */}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 500, whiteSpace: 'nowrap' }}>
+                              📋 Attempt Rule:
+                            </label>
+                            <input
+                              type="text"
+                              className="input-field"
+                              placeholder="e.g. Attempt only 3 questions"
+                              value={sec.attemptRule || ''}
+                              onChange={(e) => updatePattern(idx, 'attemptRule', e.target.value)}
+                              disabled={loading}
+                              style={{ padding: '6px 10px', fontSize: '0.8rem', minWidth: '200px', width: 'auto' }}
+                            />
+                          </div>
                       </div>
 
                       {/* Row 3: Section notes / description (collapsible) */}

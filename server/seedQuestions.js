@@ -1,10 +1,10 @@
 /**
  * Seed Script — Inserts 20 engineering questions into MongoDB
- * and optionally pushes them to ChromaDB via the AI service.
+ * and optionally pushes them to FAISS via the AI service.
  *
  * Usage:
  *   node seedQuestions.js               (MongoDB only)
- *   node seedQuestions.js --with-vector  (MongoDB + ChromaDB)
+ *   node seedQuestions.js --with-vector  (MongoDB + FAISS)
  *
  * Make sure MongoDB is running and .env is configured.
  */
@@ -242,7 +242,7 @@ async function seedMongoDB() {
 }
 
 async function pushToVectorStore() {
-  console.log("🧠 Pushing questions to ChromaDB vector store (via AI service)...");
+  console.log("🧠 Pushing questions to FAISS vector store (via AI service)...");
   try {
     const response = await axios.post(
       `${AI_SERVICE_URL}/add-questions`,
@@ -260,12 +260,12 @@ async function pushToVectorStore() {
         headers: { "Content-Type": "application/json" },
       }
     );
-    console.log(`✅ ChromaDB: ${response.data.message}`);
+    console.log(`✅ FAISS: ${response.data.message}`);
     console.log(`   Added ${response.data.added} questions to the vector store\n`);
   } catch (err) {
     const msg = err.response?.data?.detail || err.message;
-    console.warn(`⚠️  Could not push to ChromaDB (AI service may not be running): ${msg}`);
-    console.warn("   Questions are still saved in MongoDB. You can sync to ChromaDB later.\n");
+    console.warn(`⚠️  Could not push to FAISS (AI service may not be running): ${msg}`);
+    console.warn("   Questions are still saved in MongoDB. They will auto-sync to FAISS on next AI service startup.\n");
   }
 }
 
@@ -276,11 +276,11 @@ async function main() {
     // Step 1: Insert into MongoDB
     await seedMongoDB();
 
-    // Step 2: Optionally push to ChromaDB
+    // Step 2: Optionally push to FAISS
     if (withVector) {
       await pushToVectorStore();
     } else {
-      console.log("ℹ️  Skipping ChromaDB sync. Run with --with-vector to also push to the vector store.\n");
+      console.log("ℹ️  Skipping FAISS sync. Run with --with-vector to also push to the vector store.\n");
     }
 
     // Final count

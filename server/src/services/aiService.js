@@ -36,6 +36,7 @@ const generateQuestions = async ({
   style,
   instructions,
   topics,
+  unitTopicMap,
   pdfBuffer,
   pdfFilename,
 }) => {
@@ -62,6 +63,10 @@ const generateQuestions = async ({
 
       if (topics && topics.length > 0) {
         form.append("topics", JSON.stringify(topics));
+      }
+
+      if (unitTopicMap && unitTopicMap.length > 0) {
+        form.append("unit_topic_map", JSON.stringify(unitTopicMap));
       }
 
       // Attach syllabus PDF directly — the AI service sends it to the LLM

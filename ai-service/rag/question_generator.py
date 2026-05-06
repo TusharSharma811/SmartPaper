@@ -232,6 +232,7 @@ def _build_prompt_text(
     duration: Optional[str],
     instructions: Optional[List[str]],
     co_feedback: Optional[str] = None,
+    unit_topic_map: Optional[List[Dict[str, Any]]] = None,
 ) -> tuple:
     """Build system + human message text strings for question generation."""
 
@@ -250,8 +251,20 @@ def _build_prompt_text(
            "Set subquestions to an empty array []. The student picks ONE option from each question.\n"
         "8. For 'single' type questions, use a single subquestion with the same marks.\n"
         "9. Assign appropriate Bloom's taxonomy levels: K1(Remember), K2(Understand), K3(Apply), K4(Analyse), K5(Evaluate), K6(Create).\n"
-        "10. Assign Course Outcome numbers (co) logically starting from 1.\n"
     )
+
+    # CO assignment rule — tied to unit numbers if mapping is available
+    if unit_topic_map:
+        system_text += (
+            "10. CRITICAL — CO = UNIT NUMBER RULE: Each Course Outcome (CO) number MUST correspond to its unit number. "
+            "CO1 is for topics from Unit 1, CO2 is for topics from Unit 2, CO3 is for topics from Unit 3, and so on. "
+            "You MUST determine which unit a question's topic belongs to and assign the matching CO number. "
+            "Do NOT assign CO numbers randomly or arbitrarily — they MUST match the unit the topic belongs to.\n"
+        )
+    else:
+        system_text += (
+            "10. Assign Course Outcome numbers (co) logically starting from 1.\n"
+        )
 
     if style.lower() == "twisted":
         system_text += (
@@ -266,12 +279,21 @@ def _build_prompt_text(
         )
 
     # CO Balance constraint
-    system_text += (
-        "12. CRITICAL — CO BALANCE CONSTRAINT: The total marks allocated to each Course Outcome (CO) "
-        "across the entire paper MUST be balanced. The difference between the highest and lowest CO "
-        "mark totals must be AT MOST 2 marks. Distribute questions evenly across COs. "
-        "For example, if total marks = 60 and you use 5 COs, each CO should have approximately 12 marks.\n"
-    )
+    if unit_topic_map:
+        num_units = len(unit_topic_map)
+        system_text += (
+            f"12. CRITICAL — CO BALANCE CONSTRAINT: Since COs are mapped to units, you have {num_units} COs "
+            f"(CO1 through CO{num_units}). The total marks allocated to each CO across the entire paper "
+            "MUST be balanced. The difference between the highest and lowest CO mark totals must be AT MOST 2 marks. "
+            f"Distribute questions evenly across all {num_units} COs.\n"
+        )
+    else:
+        system_text += (
+            "12. CRITICAL — CO BALANCE CONSTRAINT: The total marks allocated to each Course Outcome (CO) "
+            "across the entire paper MUST be balanced. The difference between the highest and lowest CO "
+            "mark totals must be AT MOST 2 marks. Distribute questions evenly across COs. "
+            "For example, if total marks = 60 and you use 5 COs, each CO should have approximately 12 marks.\n"
+        )
 
     system_text += (
         "13. If a section has a specific difficulty level indicated, ALL questions in that section "
@@ -294,7 +316,10 @@ def _build_prompt_text(
         m = sec["marksEach"]
         q_type = sec.get("questionType", "single")
         title = sec.get("title", f"Section {label}")
-        attempt = sec.get("attemptRule", "Attempt all questions")
+        attempt = sec.get("attemptRule") or ""
+        attempt = attempt.strip()
+        if not attempt:
+            attempt = "Attempt all questions"
         sec_difficulty = sec.get("difficulty", None)
         sec_description = sec.get("description", None)
 
@@ -352,6 +377,27 @@ def _build_prompt_text(
             f"the marks per CO differ by at most 2. Adjust the 'co' field of questions accordingly.\n"
         )
 
+    # Unit-to-CO mapping guidance (critical for CO = Unit number)
+    unit_map_text = ""
+    if unit_topic_map:
+        unit_map_text = (
+            "\nCRITICAL — UNIT TO CO MAPPING (you MUST follow this):\n"
+            "Each CO number corresponds to its Unit number. Here is the mapping:\n"
+        )
+        for unit_entry in unit_topic_map:
+            unit_num = unit_entry.get("unit_number", "?")
+            unit_title = unit_entry.get("title", "")
+            unit_topics = unit_entry.get("topics", [])
+            topics_str = ", ".join(unit_topics[:8]) if unit_topics else "(no specific topics)"
+            unit_map_text += (
+                f"  - Unit {unit_num} ({unit_title}): CO{unit_num} → Topics: {topics_str}\n"
+            )
+        unit_map_text += (
+            "\nWhen generating a question about a topic, look up which unit it belongs to "
+            "and assign the corresponding CO number. For example, if a question is about a "
+            "topic from Unit 3, set co=3 (displayed as CO3).\n"
+        )
+
     human_text = (
         f"Generate a question paper for:\n"
         f"  Subject: {subject}\n"
@@ -363,6 +409,7 @@ def _build_prompt_text(
         f"  Total Marks: {total_marks}\n"
         f"\nPaper structure:\n{section_desc}\n"
         f"{topics_text}"
+        f"{unit_map_text}"
         f"{instructions_text}"
         f"{rag_text}"
         f"{co_feedback_text}"
@@ -374,21 +421,34 @@ def _build_prompt_text(
 
 
 def _get_rag_context(subject: str, topics: Optional[List[str]], top_k: int = 10) -> str:
-    """Fetch relevant questions from the vector store as RAG context."""
+    """Fetch relevant questions from the vector store as RAG context.
+
+    Uses LFU-aware search so that frequently/recently used questions
+    are penalised and new or stale questions surface instead.
+    """
     try:
         query = subject
         if topics:
             query += " " + " ".join(topics[:5])
 
-        results = vector_search(query=query, top_k=top_k, subject=subject)
+        results = vector_search(query=query, top_k=top_k, subject=subject, apply_lfu=True)
         if not results:
             return ""
 
         lines: List[str] = []
+        used_texts: List[str] = []
         for i, r in enumerate(results, 1):
             marks_info = f" [{r.get('marks', '?')} marks]" if r.get("marks") else ""
             topic_info = f" (Topic: {r['topic']})" if r.get("topic") else ""
             lines.append(f"  {i}. {r['text']}{marks_info}{topic_info}")
+            used_texts.append(r["text"])
+
+        # Record usage so these questions get penalised next time
+        try:
+            from rag.lfu_tracker import record_usage
+            record_usage(used_texts, subject=subject)
+        except Exception as lfu_err:
+            logger.warning("LFU record_usage failed (non-blocking): %s", lfu_err)
 
         return "\n".join(lines)
     except Exception as e:
@@ -423,6 +483,7 @@ async def generate(
     duration: Optional[str] = None,
     instructions: Optional[List[str]] = None,
     syllabus_pdf_bytes: Optional[bytes] = None,
+    unit_topic_map: Optional[List[Dict[str, Any]]] = None,
 ) -> Dict[str, Any]:
     """
     Generate a question paper in the rich JSON format.
@@ -474,6 +535,7 @@ async def generate(
             subject, difficulty, style, pattern, topics, rag_context,
             exam, subject_code, duration, instructions,
             co_feedback=co_feedback,
+            unit_topic_map=unit_topic_map,
         )
 
         # 3. Send PDF + prompt to Gemini SDK

@@ -1,0 +1,414 @@
+{
+  "name": "",
+  "metadata": {
+    "exam": "End Semester Examination",
+    "subject": "Data Structure",
+    "subject_code": "BCS301",
+    "duration": "3 Hours",
+    "max_marks": 70
+  },
+  "instructions": [
+    "Attempt all questions.",
+    "The total marks for each section are indicated.",
+    "Marks for each question are specified alongside."
+  ],
+  "sections": [
+    {
+      "section_id": "A",
+      "title": "Section A",
+      "description": "Short Answer Type Questions",
+      "header_notes": "",
+      "marks_scheme": "2 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 1,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "1",
+              "text": "Define Abstract Data Type (ADT) with a suitable example.",
+              "marks": 2,
+              "difficulty": "moderate",
+              "topic": "Abstract Data Types (ADT)",
+              "co": 1,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 2,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "2",
+              "text": "State the best-case and worst-case time complexity of the Bubble Sort algorithm.",
+              "marks": 2,
+              "difficulty": "moderate",
+              "topic": "Sorting",
+              "co": 2,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 3,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "3",
+              "text": "Define a Sparse Matrix and explain its triplet representation.",
+              "marks": 2,
+              "difficulty": "moderate",
+              "topic": "Sparse Matrices and their representations",
+              "co": 3,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 4,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "4",
+              "text": "List the two fundamental conditions required for a recursive function to terminate.",
+              "marks": 2,
+              "difficulty": "moderate",
+              "topic": "Principles of recursion",
+              "co": 4,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 5,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "5",
+              "text": "Explain the primary advantage of a Circular Queue over a linear queue implementation.",
+              "marks": 2,
+              "difficulty": "moderate",
+              "topic": "Circular queues",
+              "co": 5,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 6,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "6",
+              "text": "Explain Big-Oh notation and its significance in algorithm analysis.",
+              "marks": 2,
+              "difficulty": "moderate",
+              "topic": "Asymptotic notations",
+              "co": 1,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 7,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "7",
+              "text": "Compare Sequential Search and Binary Search based on their search space reduction strategy.",
+              "marks": 2,
+              "difficulty": "moderate",
+              "topic": "Searching",
+              "co": 2,
+              "bloom_level": "K2"
+            }
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "section_id": "B",
+      "title": "Section B",
+      "description": "Long Answer Type Questions",
+      "header_notes": "Attempt only 3 questions",
+      "marks_scheme": "7 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 8,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "8",
+              "text": "Explain the algorithm for Polynomial addition using a Singly Linked List representation.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Polynomial Representation and Addition",
+              "co": 3,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 9,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "9",
+              "text": "Describe the process of evaluating a Postfix expression using a stack with a step-by-step procedure.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Evaluation of postfix expression",
+              "co": 4,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 10,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "10",
+              "text": "Discuss the implementation of a Priority Queue and explain the logic for its 'delete' operation.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Priority Queue",
+              "co": 5,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 11,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "11",
+              "text": "Derive the address calculation formula for an element A[i][j][k][l] in a 4-dimensional array stored in Row Major Order.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Derivation of Index Formulae",
+              "co": 1,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 12,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "12",
+              "text": "Explain the Quick Sort algorithm and provide a detailed analysis of its performance in the worst-case scenario.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Quick Sort",
+              "co": 2,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "section_id": "C",
+      "title": "Section C",
+      "description": "Choice Group Questions",
+      "header_notes": "",
+      "marks_scheme": "7 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 13,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Describe the insertion and deletion operations in a Doubly Linked List with the help of diagrams.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Doubly Linked List",
+              "co": 3,
+              "bloom_level": "K4"
+            },
+            {
+              "label": "b",
+              "text": "Compare the efficiency and memory overhead of Singly Linked Lists, Doubly Linked Lists, and Circular Linked Lists.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Linked lists",
+              "co": 3,
+              "bloom_level": "K4"
+            }
+          ]
+        },
+        {
+          "question_id": 14,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Analyze the recursive algorithm for the Tower of Hanoi problem and determine its total number of moves for 'n' disks.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Hanoi towers",
+              "co": 4,
+              "bloom_level": "K5"
+            },
+            {
+              "label": "b",
+              "text": "Explain the mechanism of removing recursion from a function using an explicit stack with a specific example.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Removal of recursion",
+              "co": 4,
+              "bloom_level": "K4"
+            }
+          ]
+        },
+        {
+          "question_id": 15,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Discuss the implementation of a Double-Ended Queue (Dequeue) and explain the difference between input-restricted and output-restricted dequeues.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Dequeue",
+              "co": 5,
+              "bloom_level": "K4"
+            },
+            {
+              "label": "b",
+              "text": "Evaluate the performance trade-offs between array-based and linked-list-based implementations of a Queue data structure.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Queues",
+              "co": 5,
+              "bloom_level": "K5"
+            }
+          ]
+        },
+        {
+          "question_id": 16,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Explain the concept of Time-Space trade-off in algorithms and provide an example where reducing space increases time complexity.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Time-Space trade-off",
+              "co": 1,
+              "bloom_level": "K4"
+            },
+            {
+              "label": "b",
+              "text": "Discuss the Column Major Order representation of a 3D array and derive the general formula for calculating the address of element A[i][j][k].",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Column Major Order",
+              "co": 1,
+              "bloom_level": "K4"
+            }
+          ]
+        },
+        {
+          "question_id": 17,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Explain the Merge Sort algorithm and prove that its time complexity is O(n log n) in all cases.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Merge Sort",
+              "co": 2,
+              "bloom_level": "K5"
+            },
+            {
+              "label": "b",
+              "text": "Discuss various Collision Resolution techniques in Hashing, specifically comparing Chaining and Open Addressing methods.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Collision resolution Techniques",
+              "co": 2,
+              "bloom_level": "K4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "pattern": [
+    {
+      "section": "A",
+      "questions": 7,
+      "marksEach": 2,
+      "questionType": "single",
+      "difficulty": "Moderate",
+      "description": ""
+    },
+    {
+      "section": "B",
+      "questions": 5,
+      "marksEach": 7,
+      "questionType": "single",
+      "difficulty": "Hard",
+      "description": "Attempt only 3 questions"
+    },
+    {
+      "section": "C",
+      "questions": 5,
+      "marksEach": 7,
+      "questionType": "choice_group",
+      "difficulty": "",
+      "description": ""
+    }
+  ],
+  "difficulty": "Hard (85%)",
+  "createdBy": "69f9eb1cb2efc5c197237d96",
+  "pdfUrl": "C:\\Users\\sharm\\OneDrive\\Desktop\\Projects\\MajorProject\\AI_QuestionPaper\\server\\pdfs\\69f9ebd1b2efc5c197237da0.pdf",
+  "_id": "69f9ebd1b2efc5c197237da0",
+  "createdAt": "2026-05-05T13:08:33.523Z",
+  "updatedAt": "2026-05-05T13:08:35.439Z",
+  "__v": 0
+}

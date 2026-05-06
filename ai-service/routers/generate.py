@@ -20,6 +20,7 @@ async def generate_paper(
     style: str = Form("direct"),
     pattern: str = Form(...),
     topics: Optional[str] = Form(None),
+    unit_topic_map: Optional[str] = Form(None),
     exam: Optional[str] = Form(None),
     subject_code: Optional[str] = Form(None),
     duration: Optional[str] = Form(None),
@@ -31,6 +32,7 @@ async def generate_paper(
 
     Accepts multipart form data with:
       - subject, difficulty, pattern (JSON string), and optional fields
+      - unit_topic_map: JSON mapping of unit numbers to their topics (for CO = unit mapping)
       - syllabus_pdf: optional PDF file sent directly to the LLM
 
     Returns a rich JSON structure with metadata, instructions, and sections.
@@ -49,6 +51,14 @@ async def generate_paper(
                 topics_list = json.loads(topics)
             except json.JSONDecodeError:
                 topics_list = [t.strip() for t in topics.split(",") if t.strip()]
+
+        # Parse optional unit_topic_map (for CO = unit number mapping)
+        unit_map_list = None
+        if unit_topic_map:
+            try:
+                unit_map_list = json.loads(unit_topic_map)
+            except json.JSONDecodeError:
+                unit_map_list = None
 
         # Parse optional instructions
         instructions_list = None
@@ -69,6 +79,7 @@ async def generate_paper(
             style=style,
             pattern=pattern_list,
             topics=topics_list,
+            unit_topic_map=unit_map_list,
             exam=exam,
             subject_code=subject_code,
             duration=duration,
