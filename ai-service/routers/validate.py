@@ -209,6 +209,39 @@ def _build_questions_text(leaf_questions: List[Dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+def _repair_json(text: str) -> str:
+    """Attempt to repair common LLM JSON mistakes so json.loads succeeds."""
+
+    # 1. Remove trailing commas before } or ]
+    text = re.sub(r",\s*([}\]])", r"\1", text)
+
+    # 2. Insert missing commas between adjacent objects: }  {  → }, {
+    text = re.sub(r"\}\s*\{", "}, {", text)
+
+    # 3. Insert missing commas between a value and the next key:
+    #    "value"\n  "key"  → "value",\n  "key"
+    text = re.sub(
+        r'("\s*(?:true|false|null|\d+(?:\.\d+)?)?)\s*\n(\s*")',
+        r"\1,\n\2",
+        text,
+    )
+    text = re.sub(
+        r'"\s*\n(\s*")',
+        r'",\n\1',
+        text,
+    )
+
+    # 4. Close truncated JSON — balance unclosed [ and {
+    open_braces = text.count("{") - text.count("}")
+    open_brackets = text.count("[") - text.count("]")
+    if open_brackets > 0:
+        text += "]" * open_brackets
+    if open_braces > 0:
+        text += "}" * open_braces
+
+    return text
+
+
 def _parse_json_response(raw_text: Any) -> Any:
     """Parse JSON from the model response, handling fenced or noisy text."""
     if isinstance(raw_text, (dict, list)):
@@ -220,13 +253,27 @@ def _parse_json_response(raw_text: Any) -> Any:
         if text.endswith("```"):
             text = text[:-3].strip()
 
+    # Attempt 1: Direct parse
     try:
         return json.loads(text)
     except json.JSONDecodeError:
-        match = re.search(r"\{.*\}", text, re.DOTALL)
-        if not match:
-            raise
-        return json.loads(match.group(0))
+        pass
+
+    # Attempt 2: Extract outermost { … } and try
+    match = re.search(r"\{.*\}", text, re.DOTALL)
+    if match:
+        try:
+            return json.loads(match.group(0))
+        except json.JSONDecodeError:
+            pass
+
+    # Attempt 3: Repair common LLM JSON mistakes and retry
+    repaired = _repair_json(match.group(0) if match else text)
+    try:
+        return json.loads(repaired)
+    except json.JSONDecodeError:
+        logger.error("JSON repair also failed — raw text (first 500 chars): %s", text[:500])
+        raise
 
 
 def _resolve_correction(raw_item: Dict[str, Any], source_item: Dict[str, Any]) -> CorrectionItem:
@@ -364,7 +411,7 @@ async def validate_analysis(req: ValidateRequest):
                 system_instruction=system_text,
                 temperature=0.2,
                 response_mime_type="application/json",
-                max_output_tokens=8192,
+                max_output_tokens=16384,
             ),
         )
 

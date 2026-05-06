@@ -1,0 +1,417 @@
+{
+  "name": "",
+  "metadata": {
+    "exam": "End Semester Examination",
+    "subject": "Engineering Mathematics-II",
+    "subject_code": "BAS203",
+    "duration": "3 Hours",
+    "max_marks": 70
+  },
+  "instructions": [
+    "Attempt all questions.",
+    "Show all necessary steps in calculations.",
+    "Use of scientific calculator is permitted."
+  ],
+  "sections": [
+    {
+      "section_id": "A",
+      "title": "Section A",
+      "description": "Short Answer Questions",
+      "header_notes": "",
+      "marks_scheme": "2 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 1,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "1",
+              "text": "Define the substitution required to transform a Cauchy-Euler equation into a linear differential equation with constant coefficients.",
+              "marks": 2,
+              "difficulty": "easy",
+              "topic": "Cauchy-Euler equation",
+              "co": 1,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 2,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "2",
+              "text": "State the necessary conditions for the existence of the Laplace transform of a function f(t).",
+              "marks": 2,
+              "difficulty": "easy",
+              "topic": "Existence theorem",
+              "co": 2,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 3,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "3",
+              "text": "State the D’Alembert’s ratio test for the convergence of a series of positive terms.",
+              "marks": 2,
+              "difficulty": "easy",
+              "topic": "Tests for convergence of series",
+              "co": 3,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 4,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "4",
+              "text": "Write the Cauchy-Riemann equations for a function f(z) = u + iv in polar coordinates (r, θ).",
+              "marks": 2,
+              "difficulty": "medium",
+              "topic": "Cauchy- Riemann equations (Cartesian and Polar form)",
+              "co": 4,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 5,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "5",
+              "text": "Define a simple pole and write the formula for calculating the residue of a function at a simple pole.",
+              "marks": 2,
+              "difficulty": "easy",
+              "topic": "Residues",
+              "co": 5,
+              "bloom_level": "K1"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 6,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "6",
+              "text": "Solve the second-order linear differential equation: y'' - 5y' + 6y = 0.",
+              "marks": 2,
+              "difficulty": "medium",
+              "topic": "Linear differential equation of nth order with constant coefficients",
+              "co": 1,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 7,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "7",
+              "text": "Find the Laplace transform of f(t) = e^{2t} sin(3t) using the shifting property.",
+              "marks": 2,
+              "difficulty": "medium",
+              "topic": "Properties of Laplace Transform",
+              "co": 2,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "section_id": "B",
+      "title": "Section B",
+      "description": "Long Answer Questions",
+      "header_notes": "",
+      "marks_scheme": "7 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 8,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "8",
+              "text": "Test the convergence of the series: Σ [ (n!)^2 / (2n)! ] x^n for positive values of x.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Tests for convergence of series",
+              "co": 3,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 9,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "9",
+              "text": "If u = x^3 - 3xy^2, verify that u is harmonic and find the corresponding analytic function f(z) = u + iv using the Milne-Thompson method.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Method to find Analytic functions",
+              "co": 4,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 10,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "10",
+              "text": "Evaluate the integral ∮ [ (z^2 + 1) / (z - 1)^2 (z + 2) ] dz around the circle |z| = 3 using the Cauchy Residue Theorem.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Cauchy’s Residue theorem and its application",
+              "co": 5,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 11,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "11",
+              "text": "Solve the differential equation y'' + 4y = tan(2x) using the Method of Variation of Parameters.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Method of variation of parameters",
+              "co": 1,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 12,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "12",
+              "text": "Solve the initial value problem y'' + 2y' + 5y = e^{-t} sin(t), given y(0) = 0 and y'(0) = 1, using the Laplace transform method.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Application of Laplace Transform to solve ordinary differential equations and simultaneous differential equations",
+              "co": 2,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "section_id": "C",
+      "title": "Section C",
+      "description": "Detailed Answer Questions",
+      "header_notes": "",
+      "marks_scheme": "7 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 13,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Obtain the Fourier series for the function f(x) = x^2 in the interval (-π, π).",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Fourier series",
+              "co": 3,
+              "bloom_level": "K3"
+            },
+            {
+              "label": "b",
+              "text": "Find the half-range cosine series for the function f(x) = sin(x) in the interval (0, π).",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Half range Fourier sine and cosine series",
+              "co": 3,
+              "bloom_level": "K3"
+            }
+          ]
+        },
+        {
+          "question_id": 14,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Explain the properties of Mobius transformations and find the transformation that maps the points z = 0, 1, ∞ onto w = i, 1, -i.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Mobius transformation and their properties",
+              "co": 4,
+              "bloom_level": "K2"
+            },
+            {
+              "label": "b",
+              "text": "Discuss the analyticity of the function f(z) = |z|^2 and determine the points where the derivative exists.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Analytic functions",
+              "co": 4,
+              "bloom_level": "K4"
+            }
+          ]
+        },
+        {
+          "question_id": 15,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Expand the function f(z) = 1 / [ (z + 1)(z + 3) ] in a Laurent series valid for the region 1 < |z| < 3.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Taylor’s and Laurent’s series",
+              "co": 5,
+              "bloom_level": "K3"
+            },
+            {
+              "label": "b",
+              "text": "Evaluate the integral ∮ [ sin(πz^2) + cos(πz^2) ] / [ (z - 1)(z - 2) ] dz around the circle |z| = 3 using Cauchy’s Integral Formula.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Cauchy integral formula",
+              "co": 5,
+              "bloom_level": "K3"
+            }
+          ]
+        },
+        {
+          "question_id": 16,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Solve the simultaneous linear differential equations: dx/dt + 2x + 3y = 0 and dy/dt + 3x + 2y = 0, given x(0) = 1 and y(0) = 0.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Simultaneous linear differential equations",
+              "co": 1,
+              "bloom_level": "K3"
+            },
+            {
+              "label": "b",
+              "text": "Solve the differential equation x^2 y'' - xy' + y = ln(x) using the Cauchy-Euler method.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Cauchy-Euler equation",
+              "co": 1,
+              "bloom_level": "K3"
+            }
+          ]
+        },
+        {
+          "question_id": 17,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "State and prove the Convolution Theorem for Laplace transforms and use it to find L^{-1} { 1 / [ s^2 (s^2 + 1) ] }.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Convolution theorem",
+              "co": 2,
+              "bloom_level": "K3"
+            },
+            {
+              "label": "b",
+              "text": "Find the Laplace transform of a periodic square wave function f(t) with period 2a, defined as f(t) = E for 0 < t < a and f(t) = -E for a < t < 2a.",
+              "marks": 7,
+              "difficulty": "medium",
+              "topic": "Laplace transform of periodic function",
+              "co": 2,
+              "bloom_level": "K3"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "pattern": [
+    {
+      "section": "A",
+      "questions": 7,
+      "marksEach": 2,
+      "questionType": "single",
+      "attemptRule": "",
+      "difficulty": "",
+      "description": ""
+    },
+    {
+      "section": "B",
+      "questions": 5,
+      "marksEach": 7,
+      "questionType": "single",
+      "attemptRule": "",
+      "difficulty": "",
+      "description": ""
+    },
+    {
+      "section": "C",
+      "questions": 5,
+      "marksEach": 7,
+      "questionType": "choice_group",
+      "attemptRule": "",
+      "difficulty": "",
+      "description": ""
+    }
+  ],
+  "difficulty": "Moderate (52%)",
+  "createdBy": "69f9eb1cb2efc5c197237d96",
+  "pdfUrl": "C:\\Users\\sharm\\OneDrive\\Desktop\\Projects\\MajorProject\\AI_QuestionPaper\\server\\pdfs\\69fafc5d930c927d0ea417c6.pdf",
+  "_id": "69fafc5d930c927d0ea417c6",
+  "createdAt": "2026-05-06T08:31:25.167Z",
+  "updatedAt": "2026-05-06T08:31:26.780Z",
+  "__v": 0
+}
