@@ -1,0 +1,418 @@
+{
+  "name": "",
+  "metadata": {
+    "exam": "End Semester Examination",
+    "subject": "Computer Organization and Architecture",
+    "subject_code": "BCS302",
+    "duration": "3 Hours",
+    "max_marks": 70
+  },
+  "instructions": [
+    "Attempt all questions in Section A and Section C.",
+    "Attempt any three questions from Section B.",
+    "Scientific calculators are permitted.",
+    "Assume suitable data where necessary."
+  ],
+  "sections": [
+    {
+      "section_id": "A",
+      "title": "Section A",
+      "description": "Short Answer Questions",
+      "header_notes": "Attempt all questions",
+      "marks_scheme": "2 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 1,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "1",
+              "text": "In a daisy-chaining bus arbitration scheme, explain why the physical distance of a device from the bus controller creates a 'priority-starvation' scenario for downstream devices.",
+              "marks": 2,
+              "difficulty": "hard",
+              "topic": "bus architecture",
+              "co": 1,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 2,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "2",
+              "text": "The IEEE 754 standard uses a biased exponent rather than a standard 2's complement representation. Justify this design choice in the context of floating-point comparison operations.",
+              "marks": 2,
+              "difficulty": "hard",
+              "topic": "IEEE Standard for Floating Point Numbers",
+              "co": 2,
+              "bloom_level": "K5"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 3,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "3",
+              "text": "A processor features a 4-stage pipeline. If a sequence of instructions contains heavy data dependencies, analyze why the actual speedup might drop significantly below the theoretical maximum of 4.",
+              "marks": 2,
+              "difficulty": "hard",
+              "topic": "Pipelining",
+              "co": 3,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 4,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "4",
+              "text": "A software loop repeatedly accesses memory locations that map to the same set in a direct-mapped cache, causing 'thrashing'. Propose how changing the mapping to 2-way set associative would mitigate this.",
+              "marks": 2,
+              "difficulty": "hard",
+              "topic": "Cache memories",
+              "co": 4,
+              "bloom_level": "K6"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 5,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "5",
+              "text": "During a high-speed data transfer from a disk drive, the CPU is frequently interrupted, leading to system lag. Explain how a Direct Memory Access (DMA) controller solves this by 'stealing' bus cycles.",
+              "marks": 2,
+              "difficulty": "hard",
+              "topic": "Direct Memory Access",
+              "co": 5,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 6,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "6",
+              "text": "Compare a stack-organized CPU with a general-purpose register-organized CPU. Which one would typically require fewer bits to represent an 'ADD' instruction, and why?",
+              "marks": 2,
+              "difficulty": "hard",
+              "topic": "stack organization",
+              "co": 1,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 7,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "7",
+              "text": "In Booth’s Multiplication Algorithm, if the current multiplier bit is 1 and the previous bit was 0 (bit pair 10), what specific arithmetic operation is performed on the partial product, and what is the logic behind it?",
+              "marks": 2,
+              "difficulty": "hard",
+              "topic": "Booths algorithm",
+              "co": 2,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "section_id": "B",
+      "title": "Section B",
+      "description": "Long Answer Questions",
+      "header_notes": "Attempt any 3 questions",
+      "marks_scheme": "7 marks each",
+      "attempt_rule": "Attempt any 3",
+      "questions": [
+        {
+          "question_id": 8,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "8",
+              "text": "Design a 16-bit instruction format for a hypothetical processor that supports 32 general-purpose registers and 15 distinct operation codes. If the processor must support an 'Immediate' addressing mode for constants up to 255, evaluate if a single-word instruction is sufficient. Suggest an alternative if not.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Instruction types",
+              "co": 3,
+              "bloom_level": "K6"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 9,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "9",
+              "text": "A digital system employs a 2-level memory hierarchy with a main memory of 1 MB and a cache of 64 KB. If the cache uses 4-way set-associative mapping with a block size of 128 bytes, calculate the number of bits in the Tag, Set, and Word fields. Explain the 'Replacement Policy' conflict that arises when all lines in a set are full.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "address mapping and replacement",
+              "co": 4,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 10,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "10",
+              "text": "A real-time embedded system manages three I/O devices with varying urgencies. Describe the hardware implementation of a 'Priority Interrupt Controller' using a priority encoder. How does the CPU distinguish between a software exception and an external hardware interrupt during the fetch-execute cycle?",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "interrupt hardware",
+              "co": 5,
+              "bloom_level": "K5"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 11,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "11",
+              "text": "Analyze the architectural differences between a Synchronous and an Asynchronous bus. In a scenario where a fast CPU needs to communicate with a very slow legacy peripheral, evaluate which bus type would be more reliable and explain the 'Handshaking' protocol involved.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "types of buses and bus arbitration",
+              "co": 1,
+              "bloom_level": "K5"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 12,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "12",
+              "text": "Perform the multiplication of binary numbers (-9) and (+6) using Booth's Algorithm, showing every step of the register contents (AC, QR, Qn+1). Explain why Booth’s algorithm is considered superior to the hardware-based 'Shift and Add' method for signed operands.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Booths algorithm",
+              "co": 2,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "section_id": "C",
+      "title": "Section C",
+      "description": "Detailed Answer Questions",
+      "header_notes": "Attempt all questions. Choose one option from each question.",
+      "marks_scheme": "7 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 13,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "A pipelined processor encounters a 'Branch' instruction at stage 2. Evaluate the performance penalty if the pipeline is flushed vs. if 'Branch Prediction' is used. Describe the hardware requirements for a simple 1-bit dynamic branch predictor.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Pipelining",
+              "co": 3,
+              "bloom_level": "K5"
+            },
+            {
+              "label": "b",
+              "text": "Contrast the design of a Hardwired Control Unit with a Microprogrammed Control Unit. For a high-performance RISC processor with a limited instruction set, justify which control unit design would be more appropriate for maximizing clock speed.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Hardwire and micro programmed control",
+              "co": 3,
+              "bloom_level": "K5"
+            }
+          ]
+        },
+        {
+          "question_id": 14,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Design a 2D memory organization for a 4096 x 16 bit RAM. Explain the 'Selection Logic' and why a 2 1/2D organization might be preferred to reduce the complexity of the row and column decoders.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "2D & 2 1/2D memory organization",
+              "co": 4,
+              "bloom_level": "K6"
+            },
+            {
+              "label": "b",
+              "text": "In a virtual memory system, a 'Page Fault' occurs. Detail the exact sequence of events the OS and hardware perform to resolve this. Analyze how a Translation Lookaside Buffer (TLB) minimizes the performance overhead of address translation.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Virtual memory",
+              "co": 4,
+              "bloom_level": "K4"
+            }
+          ]
+        },
+        {
+          "question_id": 15,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Compare 'Programmed I/O' with 'Interrupt-Initiated I/O'. In a system where the CPU is 1000 times faster than the I/O device, calculate the percentage of CPU time wasted in a polling loop and justify the transition to an interrupt-driven model.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Modes of Data Transfer",
+              "co": 5,
+              "bloom_level": "K4"
+            },
+            {
+              "label": "b",
+              "text": "Explain the concept of 'I/O Channels'. Differentiate between a Selector Channel and a Multiplexer Channel. Which one would you implement for a system managing multiple low-speed terminals versus a single high-speed magnetic tape drive?",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "I/O channels and processors",
+              "co": 5,
+              "bloom_level": "K4"
+            }
+          ]
+        },
+        {
+          "question_id": 16,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Identify the role of 'Addressing Modes' in improving code density. For a task involving the traversal of a large 2D array, justify why 'Base-Register' plus 'Indexed' addressing is superior to absolute addressing.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "addressing modes",
+              "co": 1,
+              "bloom_level": "K5"
+            },
+            {
+              "label": "b",
+              "text": "A system uses a centralized bus arbiter with a 'Rotating Priority' (Round Robin) scheme. Analyze how this prevents device starvation compared to a 'Fixed Priority' scheme. Illustrate the control signals (Bus Request, Bus Grant) involved in one arbitration cycle.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "types of buses and bus arbitration",
+              "co": 1,
+              "bloom_level": "K4"
+            }
+          ]
+        },
+        {
+          "question_id": 17,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Design a 4-bit Look-Ahead Carry Adder (LACA) using Carry Generate (G) and Carry Propagate (P) functions. Mathematically demonstrate why the propagation delay of a LACA is independent of the number of bits compared to a Ripple Carry Adder.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "Look ahead carries adders",
+              "co": 2,
+              "bloom_level": "K6"
+            },
+            {
+              "label": "b",
+              "text": "Analyze the IEEE 754 Single Precision format for representing floating-point numbers. Convert the decimal value -25.75 into its 32-bit hexadecimal equivalent. Discuss how 'Underflow' is handled using subnormal numbers.",
+              "marks": 7,
+              "difficulty": "hard",
+              "topic": "IEEE Standard for Floating Point Numbers",
+              "co": 2,
+              "bloom_level": "K4"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "pattern": [
+    {
+      "section": "A",
+      "questions": 7,
+      "marksEach": 2,
+      "questionType": "single",
+      "attemptRule": "",
+      "difficulty": "",
+      "description": ""
+    },
+    {
+      "section": "B",
+      "questions": 5,
+      "marksEach": 7,
+      "questionType": "single",
+      "attemptRule": "Attempt any 3",
+      "difficulty": "",
+      "description": ""
+    },
+    {
+      "section": "C",
+      "questions": 5,
+      "marksEach": 7,
+      "questionType": "choice_group",
+      "attemptRule": "",
+      "difficulty": "",
+      "description": ""
+    }
+  ],
+  "difficulty": "Hard (80%)",
+  "createdBy": "69f9eb1cb2efc5c197237d96",
+  "pdfUrl": "C:\\Users\\sharm\\OneDrive\\Desktop\\Projects\\MajorProject\\AI_QuestionPaper\\server\\pdfs\\69faedb40ab8ce2ee42c8dda.pdf",
+  "_id": "69faedb40ab8ce2ee42c8dda",
+  "createdAt": "2026-05-06T07:28:52.877Z",
+  "updatedAt": "2026-05-06T07:28:55.099Z",
+  "__v": 0
+}

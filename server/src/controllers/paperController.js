@@ -9,7 +9,7 @@ import path from "path";
 
 // ── Async question harvester ─────────────────────────────────────
 // Extracts individual questions from a generated paper and saves
-// them to both MongoDB (Question collection) and ChromaDB (vector
+// them to both MongoDB (Question collection) and FAISS (vector
 // store) so they feed future RAG-based generation.
 // Runs fire-and-forget — errors are logged but never block the user.
 
@@ -56,7 +56,7 @@ const saveGeneratedQuestionsAsync = (paper) => {
       const inserted = await Question.insertMany(questionsToSave, { ordered: false });
       logger.info(`[QuestionHarvester] Saved ${inserted.length} questions to MongoDB from paper ${paper._id}`);
 
-      // 2. Push to ChromaDB vector store (best-effort)
+      // 2. Push to FAISS vector store (best-effort)
       try {
         await pushToVectorStore(
           questionsToSave.map((q) => ({
@@ -67,9 +67,9 @@ const saveGeneratedQuestionsAsync = (paper) => {
             topic: q.topic,
           }))
         );
-        logger.info(`[QuestionHarvester] Pushed ${questionsToSave.length} questions to ChromaDB`);
+        logger.info(`[QuestionHarvester] Pushed ${questionsToSave.length} questions to FAISS`);
       } catch (vecErr) {
-        logger.warn(`[QuestionHarvester] ChromaDB push failed (questions still in MongoDB): ${vecErr.message}`);
+        logger.warn(`[QuestionHarvester] FAISS push failed (questions still in MongoDB): ${vecErr.message}`);
       }
     } catch (err) {
       logger.error(`[QuestionHarvester] Failed to save generated questions: ${err.message}`);
@@ -91,7 +91,7 @@ const saveGeneratedQuestionsAsync = (paper) => {
  */
 const generatePaper = async (req, res, next) => {
   try {
-    const { subject, difficulty, exam, subject_code, duration, style, paperName, topics, max_marks } = req.body;
+    const { subject, difficulty, exam, subject_code, duration, style, paperName, topics, max_marks, unit_topic_map } = req.body;
     let pattern;
     let instructions;
 
@@ -156,6 +156,16 @@ const generatePaper = async (req, res, next) => {
       }
     }
 
+    // Parse optional unit_topic_map (unit→topic mapping for CO assignment)
+    let unitTopicMap = null;
+    if (unit_topic_map) {
+      try {
+        unitTopicMap = JSON.parse(unit_topic_map);
+      } catch {
+        unitTopicMap = null;
+      }
+    }
+
     const aiResponse = await generateQuestions({
       subject,
       difficulty,
@@ -166,6 +176,7 @@ const generatePaper = async (req, res, next) => {
       style,
       instructions,
       topics: topicsList,
+      unitTopicMap,
       pdfBuffer: req.file ? req.file.buffer : null,
       pdfFilename: req.file ? req.file.originalname : null,
     });

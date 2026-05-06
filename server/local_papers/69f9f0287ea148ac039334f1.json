@@ -1,0 +1,417 @@
+{
+  "name": "",
+  "metadata": {
+    "exam": "End Semester Examination",
+    "subject": "DATA STRUCTURE",
+    "subject_code": "BCS301",
+    "duration": "3 Hours",
+    "max_marks": 70
+  },
+  "instructions": [
+    "Attempt all questions from Section A and Section C.",
+    "Attempt any three questions from Section B.",
+    "Assume suitable data where necessary."
+  ],
+  "sections": [
+    {
+      "section_id": "A",
+      "title": "Section A",
+      "description": "Short Answer Questions",
+      "header_notes": "Attempt all questions. Each question carries 2 marks.",
+      "marks_scheme": "2 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 1,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "1",
+              "text": "A mobile application developer must choose between an algorithm using 2GB RAM finishing in 1 second, versus one using 50MB RAM finishing in 2 minutes. Analyze this dilemma using the Time-Space trade-off principle for a handheld device with 4GB total RAM.",
+              "marks": 2,
+              "difficulty": "very_hard",
+              "topic": "Time-Space trade-off",
+              "co": 1,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 2,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "2",
+              "text": "In a memory-constrained embedded system, you need to store a list of 10,000 integers. Compare the memory overhead of a Singly Linked List versus a Doubly Linked List, specifically considering the pointer-to-data ratio.",
+              "marks": 2,
+              "difficulty": "very_hard",
+              "topic": "Linked lists",
+              "co": 1,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 3,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "3",
+              "text": "A recursive function for calculating Fibonacci numbers triggers a 'Stack Overflow' error for N=1000, while an iterative version succeeds. Diagnose the architectural reason for this failure in terms of stack frame management.",
+              "marks": 2,
+              "difficulty": "very_hard",
+              "topic": "Iteration and Recursion",
+              "co": 2,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 4,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "4",
+              "text": "An operating system scheduler uses a Priority Queue to manage tasks. If three tasks arrive with the same priority, explain how the internal data structure must be modified to ensure 'First-Come-First-Served' behavior among equals.",
+              "marks": 2,
+              "difficulty": "very_hard",
+              "topic": "Priority Queue",
+              "co": 2,
+              "bloom_level": "K5"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 5,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "5",
+              "text": "A developer attempts to execute a Binary Search on an array that was recently modified and is now 'unsorted'. Critically evaluate the reliability of the result and determine the maximum number of elements the algorithm might actually 'see' before terminating.",
+              "marks": 2,
+              "difficulty": "very_hard",
+              "topic": "Binary Search",
+              "co": 3,
+              "bloom_level": "K5"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 6,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "6",
+              "text": "Two students have identical grades in a class list. If the list is sorted by grades using an 'unstable' sorting algorithm, explain the potential change in their relative positions compared to the original input order.",
+              "marks": 2,
+              "difficulty": "very_hard",
+              "topic": "Sorting",
+              "co": 3,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 7,
+          "type": "single",
+          "marks": 2,
+          "subquestions": [
+            {
+              "label": "7",
+              "text": "In a hash table using Linear Probing, the load factor (α) reaches 0.95. Predict the impact on the average search time and propose a threshold for 'Rehashing' to maintain O(1) performance.",
+              "marks": 2,
+              "difficulty": "very_hard",
+              "topic": "Hashing",
+              "co": 3,
+              "bloom_level": "K6"
+            }
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "section_id": "B",
+      "title": "Section B",
+      "description": "Long Answer Questions",
+      "header_notes": "Attempt only 3 questions. Each question carries 7 marks.",
+      "marks_scheme": "7 marks each",
+      "attempt_rule": "Attempt only 3 questions",
+      "questions": [
+        {
+          "question_id": 8,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "8",
+              "text": "A 3D array 'Data[4][8][10]' is stored in memory using Column Major Order. If the base address is 2000 and each integer occupies 8 bytes, derive the general index formula for n-dimensions and use it to calculate the exact memory location of Data[2][5][7].",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Representation of Arrays",
+              "co": 1,
+              "bloom_level": "K3"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 9,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "9",
+              "text": "Design a logic to evaluate the postfix expression '8 2 / 5 3 - * 4 ^'. During the process, a hardware interrupt occurs when the stack contains more than 3 elements. Identify at which point in the evaluation this interrupt triggers and provide the stack state.",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Evaluation of postfix expression",
+              "co": 2,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 10,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "10",
+              "text": "The Tower of Hanoi problem for N=4 disks is being solved. Analyze the recursive calls and determine the total number of 'move' operations required. Propose how 'Tail Recursion' could be applied here to optimize the call stack, or explain why it might not be feasible.",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Hanoi towers",
+              "co": 2,
+              "bloom_level": "K5"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 11,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "11",
+              "text": "In a Quick Sort implementation, the pivot is consistently chosen as the smallest element in a nearly-sorted array. Mathematically demonstrate how this choice leads to O(n^2) complexity and suggest a 'Median-of-Three' strategy to prevent this degradation.",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Quick Sort",
+              "co": 3,
+              "bloom_level": "K4"
+            }
+          ],
+          "options": []
+        },
+        {
+          "question_id": 12,
+          "type": "single",
+          "marks": 7,
+          "subquestions": [
+            {
+              "label": "12",
+              "text": "A dictionary system uses Hashing for word lookups. Compare the efficiency of 'Chaining' versus 'Quadratic Probing' in a scenario where the hash function produces many primary clusters. Which technique minimizes the number of probes for a failed search?",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Collision resolution Techniques",
+              "co": 3,
+              "bloom_level": "K5"
+            }
+          ],
+          "options": []
+        }
+      ]
+    },
+    {
+      "section_id": "C",
+      "title": "Section C",
+      "description": "Detailed Answer Questions",
+      "header_notes": "Attempt all questions. Each question offers two choices; select one.",
+      "marks_scheme": "7 marks each",
+      "attempt_rule": "Attempt all questions",
+      "questions": [
+        {
+          "question_id": 13,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "A large scientific simulation generates a 1000x1000 matrix where only 0.5% of entries are non-zero. Formulate a 'Triplet' representation using a Singly Linked List and compare its space efficiency against a standard 2D array implementation.",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Sparse Matrices",
+              "co": 1,
+              "bloom_level": "K6"
+            },
+            {
+              "label": "b",
+              "text": "Design an algorithm to reverse a Singly Linked List 'in-place' using exactly three pointers. Provide a step-by-step trace for a list containing [10 -> 20 -> 30 -> 40] and analyze the time complexity of your approach.",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Operations on a Linked List",
+              "co": 1,
+              "bloom_level": "K6"
+            }
+          ]
+        },
+        {
+          "question_id": 14,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "You are representing polynomials of the form P(x, y) = 5x^2y + 3xy^2 + 7. Propose a Linked List structure that can handle addition of two such multi-variable polynomials and explain the logic for merging terms with identical exponents.",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Polynomial Representation",
+              "co": 1,
+              "bloom_level": "K6"
+            },
+            {
+              "label": "b",
+              "text": "For an algorithm defined by the recurrence relation T(n) = 4T(n/2) + n^2, determine its asymptotic complexity using the Master Theorem. Explain the 'bottleneck' of this algorithm as 'n' grows towards infinity.",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Asymptotic notations",
+              "co": 1,
+              "bloom_level": "K4"
+            }
+          ]
+        },
+        {
+          "question_id": 15,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "Implement a Circular Queue using an array of size 'N'. Develop the logic for 'enqueue' and 'dequeue' operations such that you can distinguish between a 'Full' and 'Empty' queue without using a separate counter variable.",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Circular queues",
+              "co": 2,
+              "bloom_level": "K6"
+            },
+            {
+              "label": "b",
+              "text": "Analyze the recursive Fibonacci algorithm. Draw the recursion tree for N=5 and identify the redundant calculations. Propose a 'Memoization' strategy using an array to convert this O(2^n) process into an O(n) process.",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Fibonacci numbers",
+              "co": 2,
+              "bloom_level": "K5"
+            }
+          ]
+        },
+        {
+          "question_id": 16,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "A navigation system uses a Dequeue (Double-Ended Queue) to store the last 10 steps of a path. If a user takes a wrong turn, the last 3 steps must be removed from the 'rear'. If they find a shortcut, a new starting point is added to the 'front'. Design the array-based logic for these operations.",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Dequeue",
+              "co": 2,
+              "bloom_level": "K6"
+            },
+            {
+              "label": "b",
+              "text": "A dataset contains 1 million records with keys ranging from 0 to 999. Compare the performance of Radix Sort versus Merge Sort for this specific range. Which would you recommend if the primary goal is minimizing CPU cycles?",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Radix Sort",
+              "co": 3,
+              "bloom_level": "K5"
+            }
+          ]
+        },
+        {
+          "question_id": 17,
+          "type": "choice_group",
+          "marks": 7,
+          "subquestions": [],
+          "options": [
+            {
+              "label": "a",
+              "text": "You are searching for a specific record in a massive 1TB file stored on a disk. Evaluate the use of 'Index Sequential Search' versus 'Binary Search'. Consider the number of disk I/O operations required for each and justify your choice.",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Index Sequential Search",
+              "co": 3,
+              "bloom_level": "K5"
+            },
+            {
+              "label": "b",
+              "text": "Construct a Max-Heap from the sequence [12, 5, 18, 2, 25, 30]. After construction, perform two 'Delete Max' operations. Show the state of the heap after each step and explain the 'Heapify' logic used to restore heap properties.",
+              "marks": 7,
+              "difficulty": "very_hard",
+              "topic": "Heap Sort",
+              "co": 3,
+              "bloom_level": "K3"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "pattern": [
+    {
+      "section": "A",
+      "questions": 7,
+      "marksEach": 2,
+      "questionType": "single",
+      "attemptRule": "",
+      "difficulty": "",
+      "description": ""
+    },
+    {
+      "section": "B",
+      "questions": 5,
+      "marksEach": 7,
+      "questionType": "single",
+      "attemptRule": "Attempt only 3 questions",
+      "difficulty": "",
+      "description": ""
+    },
+    {
+      "section": "C",
+      "questions": 5,
+      "marksEach": 7,
+      "questionType": "choice_group",
+      "attemptRule": "",
+      "difficulty": "",
+      "description": ""
+    }
+  ],
+  "difficulty": "Very Hard (92%)",
+  "createdBy": "69f9eb1cb2efc5c197237d96",
+  "pdfUrl": "C:\\Users\\sharm\\OneDrive\\Desktop\\Projects\\MajorProject\\AI_QuestionPaper\\server\\pdfs\\69f9f0287ea148ac039334f1.pdf",
+  "_id": "69f9f0287ea148ac039334f1",
+  "createdAt": "2026-05-05T13:27:04.072Z",
+  "updatedAt": "2026-05-05T13:27:05.987Z",
+  "__v": 0
+}
